@@ -202,7 +202,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
             // Dummy restaurant data
             val dummyRestaurants = listOf(
                 Restaurant("Restaurant A", 11, "","f00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00df00d"),
-                Restaurant("Restaurant B", 12, "","f00d"),
+                Restaurant("Restaurant B", 12, "","f00dzzz"),
                 Restaurant("Restaurant C", 13, "","f00d"),
                 Restaurant("Restaurant D", 14, "","f00d"),
                 Restaurant("Restaurant E", 15, "","f00d")
