@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">CW</string>
+    <string name="search_restaurants">Search Restaurants</string>
+    <string name="dummyres1">Boogly Burgers</string>
+    <string name="dummyres2">Le Food</string>
+    <string name="dummyres3">Duck Dinner</string>
+    <string name="nearest">Nearest</string>
+    <string name="highrate">Highest Rated</string>
+    <string name="writereview">Write Review</string>
+    <string name="username">Username</string>
+    <string name="images">Images</string>
+    <string name="seallreviews">See all reviews></string>
+    <string name="review">
+        Mixed experience.
+        The service was great but the duck we were served was still quacking!</string>
+    <string name="duckscription">
+        COME EAT SOME DUCKFUL DUCK!
+        We guarantee that you WILL be ducked!
+        Meow!!!</string>
+</resources>

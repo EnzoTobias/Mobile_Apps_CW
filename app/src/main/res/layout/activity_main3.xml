@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity2">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar"
+        android:layout_width="0dp"
+        android:layout_height="78dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="60dp"
+        android:iconifiedByDefault="false"
+        android:queryHint="@string/search_restaurants"
+        app:layout_constraintBottom_toBottomOf="@+id/materialToolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/materialToolbar"
+        app:layout_constraintTop_toTopOf="@+id/materialToolbar" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="68dp"
+        android:layout_height="60dp"
+        android:background="#00EDEDED"
+        app:layout_constraintBottom_toBottomOf="@+id/materialToolbar"
+        app:layout_constraintEnd_toStartOf="@+id/searchView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/materialToolbar"
+        app:srcCompat="@drawable/_thingos" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialToolbar"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#C8C5C5">
+
+                <ImageView
+                    android:id="@+id/imageView2a"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_duck_soup_photorealistic_a76eec3c_c3d6_4c5b_8869_40cb1f784360" />
+
+
+                <TextView
+                    android:id="@+id/textView6a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/username"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@+id/imageViewa"
+                    app:layout_constraintTop_toTopOf="@+id/imageViewa" />
+
+                <TextView
+                    android:id="@+id/textView7a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/dummyres3"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView2a"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageViewa"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <ImageView
+                    android:id="@+id/imageView7a"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_duck_soup_photorealistic_ad89f309_f9b3_4717_abda_a89ba176c68b" />
+
+                <ImageView
+                    android:id="@+id/imageView8a"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView7a"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_duck_soup_photorealistic_2a86d4b5_1a65_4aac_a561_2aa366e8fcb0" />
+
+                <TextView
+                    android:id="@+id/textView8a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/review"
+                    app:layout_constraintBottom_toTopOf="@+id/imageView8a"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewa"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/textView9a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/images"
+                    app:layout_constraintBottom_toTopOf="@+id/imageView7a"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView8a" />
+
+                <ImageView
+                    android:id="@+id/imageView9a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@+id/imageViewa"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6a"
+                    app:srcCompat="@drawable/_stars" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#C8C5C5">
+
+                <ImageView
+                    android:id="@+id/imageView2b"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_duck_soup_photorealistic_a76eec3c_c3d6_4c5b_8869_40cb1f784360" />
+
+
+                <TextView
+                    android:id="@+id/textView6b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/username"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@+id/imageViewb"
+                    app:layout_constraintTop_toTopOf="@+id/imageViewb" />
+
+                <TextView
+                    android:id="@+id/textView7b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/dummyres3"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView2b"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageViewb"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <ImageView
+                    android:id="@+id/imageView7b"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_duck_soup_photorealistic_ad89f309_f9b3_4717_abda_a89ba176c68b" />
+
+                <ImageView
+                    android:id="@+id/imageView8b"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView7b"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_duck_soup_photorealistic_2a86d4b5_1a65_4aac_a561_2aa366e8fcb0" />
+
+                <TextView
+                    android:id="@+id/textView8b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/review"
+                    app:layout_constraintBottom_toTopOf="@+id/imageView8b"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewb"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/textView9b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/images"
+                    app:layout_constraintBottom_toTopOf="@+id/imageView7b"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView8b" />
+
+                <ImageView
+                    android:id="@+id/imageView9b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@+id/imageViewb"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6b"
+                    app:srcCompat="@drawable/_stars" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#C8C5C5">
+
+                <ImageView
+                    android:id="@+id/imageView2c"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_duck_soup_photorealistic_a76eec3c_c3d6_4c5b_8869_40cb1f784360" />
+
+
+                <TextView
+                    android:id="@+id/textView6c"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/username"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@+id/imageViewc"
+                    app:layout_constraintTop_toTopOf="@+id/imageViewc" />
+
+                <TextView
+                    android:id="@+id/textView7c"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/dummyres3"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView2c"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageViewc"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <ImageView
+                    android:id="@+id/imageView7c"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_duck_soup_photorealistic_ad89f309_f9b3_4717_abda_a89ba176c68b" />
+
+                <ImageView
+                    android:id="@+id/imageView8c"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView7c"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_duck_soup_photorealistic_2a86d4b5_1a65_4aac_a561_2aa366e8fcb0" />
+
+                <TextView
+                    android:id="@+id/textView8c"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/review"
+                    app:layout_constraintBottom_toTopOf="@+id/imageView8c"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewc"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/textView9c"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/images"
+                    app:layout_constraintBottom_toTopOf="@+id/imageView7c"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView8c" />
+
+                <ImageView
+                    android:id="@+id/imageView9c"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@+id/imageViewc"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6c"
+                    app:srcCompat="@drawable/_stars" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#C8C5C5">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_duck_soup_photorealistic_a76eec3c_c3d6_4c5b_8869_40cb1f784360" />
+
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/username"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/dummyres3"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <ImageView
+                    android:id="@+id/imageView7"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_duck_soup_photorealistic_ad89f309_f9b3_4717_abda_a89ba176c68b" />
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView7"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_duck_soup_photorealistic_2a86d4b5_1a65_4aac_a561_2aa366e8fcb0" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/review"
+                    app:layout_constraintBottom_toTopOf="@+id/imageView8"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/images"
+                    app:layout_constraintBottom_toTopOf="@+id/imageView7"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+                <ImageView
+                    android:id="@+id/imageView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6"
+                    app:srcCompat="@drawable/_stars" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

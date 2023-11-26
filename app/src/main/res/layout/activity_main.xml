@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView2"
+        android:layout_width="0dp"
+        android:layout_height="275dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
+        app:layout_constraintVertical_bias="0.39">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="314dp"
+                android:layout_height="276dp">
+
+                <ImageView
+                    android:id="@+id/dishImage"
+                    android:layout_width="258dp"
+                    android:layout_height="258dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_dish_photorealistic_7e241d13_6798_424b_b431_c682908d7421" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="108dp"
+                    android:layout_height="51dp"
+                    app:layout_constraintStart_toStartOf="@+id/dishImage"
+                    app:layout_constraintTop_toTopOf="@+id/dishImage"
+                    app:srcCompat="@drawable/_stars" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="#C1000000"
+                    android:text="@string/dummyres2"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/dishImage"
+                    app:layout_constraintEnd_toEndOf="@+id/dishImage"
+                    app:layout_constraintStart_toStartOf="@+id/dishImage" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="314dp"
+                android:layout_height="276dp">
+
+                <ImageView
+                    android:id="@+id/burgerImage"
+                    android:layout_width="258dp"
+                    android:layout_height="258dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_burger_photorealistic_23f4b9f9_7c15_447b_b58c_41631ebe89c2" />
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="108dp"
+                    android:layout_height="51dp"
+                    app:layout_constraintStart_toStartOf="@+id/burgerImage"
+                    app:layout_constraintTop_toTopOf="@+id/burgerImage"
+                    app:srcCompat="@drawable/_stars" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="#C1000000"
+                    android:text="@string/dummyres1"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/burgerImage"
+                    app:layout_constraintEnd_toEndOf="@+id/burgerImage"
+                    app:layout_constraintStart_toStartOf="@+id/burgerImage" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="314dp"
+                android:layout_height="276dp">
+
+                <ImageView
+                    android:id="@+id/duckImage"
+                    android:layout_width="258dp"
+                    android:layout_height="258dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_duck_soup_photorealistic_a76eec3c_c3d6_4c5b_8869_40cb1f784360" />
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="108dp"
+                    android:layout_height="51dp"
+                    app:layout_constraintStart_toStartOf="@+id/duckImage"
+                    app:layout_constraintTop_toTopOf="@+id/duckImage"
+                    app:srcCompat="@drawable/_stars" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="#C1000000"
+                    android:text="@string/dummyres3"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/duckImage"
+                    app:layout_constraintEnd_toEndOf="@+id/duckImage"
+                    app:layout_constraintStart_toStartOf="@+id/duckImage" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar3"
+        android:layout_width="0dp"
+        android:layout_height="78dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.397"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="60dp"
+        android:iconifiedByDefault="false"
+        android:queryHint="@string/search_restaurants"
+        app:layout_constraintBottom_toBottomOf="@+id/materialToolbar3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/materialToolbar3"
+        app:layout_constraintTop_toTopOf="@+id/materialToolbar3" />
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="0dp"
+        android:layout_height="275dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialToolbar3"
+        app:layout_constraintVertical_bias="0.13">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="314dp"
+                android:layout_height="276dp">
+
+                <ImageView
+                    android:id="@+id/dishImage2"
+                    android:layout_width="258dp"
+                    android:layout_height="258dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_dish_photorealistic_7e241d13_6798_424b_b431_c682908d7421" />
+
+                <ImageView
+                    android:id="@+id/imageView32"
+                    android:layout_width="108dp"
+                    android:layout_height="51dp"
+                    app:layout_constraintStart_toStartOf="@+id/dishImage2"
+                    app:layout_constraintTop_toTopOf="@+id/dishImage2"
+                    app:srcCompat="@drawable/_stars" />
+
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="#C1000000"
+                    android:text="@string/dummyres2"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/dishImage2"
+                    app:layout_constraintEnd_toEndOf="@+id/dishImage2"
+                    app:layout_constraintStart_toStartOf="@+id/dishImage2" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="314dp"
+                android:layout_height="276dp">
+
+                <ImageView
+                    android:id="@+id/burgerImage2"
+                    android:layout_width="258dp"
+                    android:layout_height="258dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_burger_photorealistic_23f4b9f9_7c15_447b_b58c_41631ebe89c2" />
+
+                <ImageView
+                    android:id="@+id/imageView42"
+                    android:layout_width="108dp"
+                    android:layout_height="51dp"
+                    app:layout_constraintStart_toStartOf="@+id/burgerImage2"
+                    app:layout_constraintTop_toTopOf="@+id/burgerImage2"
+                    app:srcCompat="@drawable/_stars" />
+
+                <TextView
+                    android:id="@+id/textView222"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="#C1000000"
+                    android:text="@string/dummyres1"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/burgerImage2"
+                    app:layout_constraintEnd_toEndOf="@+id/burgerImage2"
+                    app:layout_constraintStart_toStartOf="@+id/burgerImage2" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="314dp"
+                android:layout_height="276dp">
+
+                <ImageView
+                    android:id="@+id/duckImage2"
+                    android:layout_width="258dp"
+                    android:layout_height="258dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_duck_soup_photorealistic_a76eec3c_c3d6_4c5b_8869_40cb1f784360" />
+
+                <ImageView
+                    android:id="@+id/imageView52"
+                    android:layout_width="108dp"
+                    android:layout_height="51dp"
+                    app:layout_constraintStart_toStartOf="@+id/duckImage2"
+                    app:layout_constraintTop_toTopOf="@+id/duckImage2"
+                    app:srcCompat="@drawable/_stars" />
+
+                <TextView
+                    android:id="@+id/textView322"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="#C1000000"
+                    android:text="@string/dummyres3"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/duckImage2"
+                    app:layout_constraintEnd_toEndOf="@+id/duckImage2"
+                    app:layout_constraintStart_toStartOf="@+id/duckImage2" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="174dp"
+        android:layout_height="73dp"
+        android:text="@string/writereview"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="68dp"
+        android:layout_height="60dp"
+        android:background="#00EDEDED"
+        app:layout_constraintBottom_toBottomOf="@+id/materialToolbar3"
+        app:layout_constraintEnd_toStartOf="@+id/searchView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/materialToolbar3"
+        app:srcCompat="@drawable/_thingos" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/highrate"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
+        app:layout_constraintStart_toStartOf="@+id/horizontalScrollView" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/nearest"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView2"
+        app:layout_constraintStart_toStartOf="@+id/horizontalScrollView2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
