@@ -2,100 +2,122 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:id="@+id/mainScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
+            android:id="@+id/mainLinear"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/starImage1"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                app:layout_constraintStart_toEndOf="@+id/ImageRestaurant"
-                app:layout_constraintTop_toBottomOf="@+id/restaurantName"
-                app:srcCompat="@drawable/star4review" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/starImage2"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                app:layout_constraintStart_toEndOf="@+id/starImage1"
-                app:layout_constraintTop_toBottomOf="@+id/restaurantName"
-                app:srcCompat="@drawable/star4review" />
+                <ImageView
+                    android:id="@+id/starImage1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toEndOf="@+id/ImageRestaurant"
+                    app:layout_constraintTop_toBottomOf="@+id/restaurantName"
+                    app:srcCompat="@drawable/star4review" />
 
-            <ImageView
-                android:id="@+id/starImage3"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                app:layout_constraintStart_toEndOf="@+id/starImage2"
-                app:layout_constraintTop_toBottomOf="@+id/restaurantName"
-                app:srcCompat="@drawable/star4review" />
+                <ImageView
+                    android:id="@+id/starImage2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toEndOf="@+id/starImage1"
+                    app:layout_constraintTop_toBottomOf="@+id/restaurantName"
+                    app:srcCompat="@drawable/star4review" />
 
-            <ImageView
-                android:id="@+id/starImage4"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                app:layout_constraintStart_toEndOf="@+id/starImage3"
-                app:layout_constraintTop_toBottomOf="@+id/restaurantName"
-                app:srcCompat="@drawable/star4review" />
+                <ImageView
+                    android:id="@+id/starImage3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toEndOf="@+id/starImage2"
+                    app:layout_constraintTop_toBottomOf="@+id/restaurantName"
+                    app:srcCompat="@drawable/star4review" />
 
-            <ImageView
-                android:id="@+id/starImage5"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                app:layout_constraintStart_toEndOf="@+id/starImage4"
-                app:layout_constraintTop_toBottomOf="@+id/restaurantName"
-                app:srcCompat="@drawable/star4review" />
+                <ImageView
+                    android:id="@+id/starImage4"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toEndOf="@+id/starImage3"
+                    app:layout_constraintTop_toBottomOf="@+id/restaurantName"
+                    app:srcCompat="@drawable/star4review" />
 
-            <ImageView
-                android:id="@+id/ImageRestaurant"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_dish_photorealistic_7e241d13_6798_424b_b431_c682908d7421" />
+                <ImageView
+                    android:id="@+id/starImage5"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toEndOf="@+id/starImage4"
+                    app:layout_constraintTop_toBottomOf="@+id/restaurantName"
+                    app:srcCompat="@drawable/star4review" />
+
+                <ImageView
+                    android:id="@+id/ImageRestaurant"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_dish_photorealistic_7e241d13_6798_424b_b431_c682908d7421" />
+
+                <TextView
+                    android:id="@+id/restaurantName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="2dp"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/ImageRestaurant"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/restaurantDesc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="10dp"
+                    android:ellipsize="end"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ImageRestaurant" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/restaurantName"
-                android:layout_width="0dp"
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="2dp"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/ImageRestaurant"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/restaurantDesc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:ellipsize="end"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ImageRestaurant" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/reviews"
+                android:textSize="24sp"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+        </LinearLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

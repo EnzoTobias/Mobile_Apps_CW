@@ -2,7 +2,9 @@ package com.example.cw
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 
 class RestaurantViewActivity : AppCompatActivity() {
@@ -23,13 +25,34 @@ class RestaurantViewActivity : AppCompatActivity() {
         val restaurant: Restaurant
         restaurant = db.getRestaurantById(receivedResID)
 
-
         restaurantName.text = restaurant.name
         restaurantDesc.text = restaurant.description
         restaurantImage.setImageBitmap(restaurant.getRestaurantImageFromPath(this, R.drawable.reyzel_lezyer_photo_of_a_burger_photorealistic_23f4b9f9_7c15_447b_b58c_41631ebe89c2))
         val restaurantScore = db.getRestaurantScore(restaurant)
         Review.displayStars(restaurantScore, starImage1, starImage2, starImage3, starImage4, starImage5)
+        displayReviewsInLinearLayout(db.reviewsByRestaurant(receivedResID))
 
 
     }
+
+    private fun displayReviewsInLinearLayout(reviewsList: ArrayList<Review>) {
+        val inflater = LayoutInflater.from(this)
+        val mainLinear = findViewById<LinearLayout>(R.id.mainLinear)
+
+        for (review in reviewsList) {
+            val reviewLayout = inflater.inflate(R.layout.restaurant_review, mainLinear, false)
+
+            val userPfp = reviewLayout.findViewById<ImageView>(R.id.userPfp)
+            val userName = reviewLayout.findViewById<TextView>(R.id.userName)
+            val reviewText = reviewLayout.findViewById<TextView>(R.id.reviewText)
+            val user = review.user
+
+            userPfp.setImageBitmap(user.getUserPfpFromPath(this, R.drawable.reyzel_lezyer_photo_of_a_duck_soup_photorealistic_ad89f309_f9b3_4717_abda_a89ba176c68b))
+            userName.text = review.user.username
+            reviewText.text = review.text
+
+            mainLinear.addView(reviewLayout)
+        }
+    }
+
 }

@@ -3,40 +3,93 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:background="#D6D6D6">
 
     <ImageView
-        android:id="@+id/ImageRestaurant"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:id="@+id/starImage1"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="90dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/star4review" />
+
+    <ImageView
+        android:id="@+id/starImage2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toEndOf="@+id/starImage1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/star4review" />
+
+    <ImageView
+        android:id="@+id/starImage3"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toEndOf="@+id/starImage2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/star4review" />
+
+    <ImageView
+        android:id="@+id/starImage4"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toEndOf="@+id/starImage3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/star4review" />
+
+    <ImageView
+        android:id="@+id/starImage5"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toEndOf="@+id/starImage4"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/star4review" />
+
+    <ImageView
+        android:id="@+id/userPfp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="7dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/reyzel_lezyer_photo_of_a_dish_photorealistic_7e241d13_6798_424b_b431_c682908d7421" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/restaurantName"
+        android:id="@+id/userName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/userPfp"
+        app:layout_constraintEnd_toStartOf="@+id/starImage1"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/ImageRestaurant"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/userPfp"
+        app:layout_constraintTop_toTopOf="@+id/userPfp"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/restaurantDesc"
+        android:id="@+id/reviewText"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:textSize="16sp"
-        android:ellipsize="end"
-        app:layout_constraintBottom_toBottomOf="@+id/ImageRestaurant"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/restaurantName"
-        app:layout_constraintTop_toBottomOf="@+id/restaurantName"
+        app:layout_constraintStart_toEndOf="@+id/userPfp"
+        app:layout_constraintTop_toBottomOf="@+id/userName"
         app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

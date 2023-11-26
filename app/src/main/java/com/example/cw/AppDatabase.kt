@@ -9,7 +9,7 @@ import kotlin.random.Random
 
 class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
-        private const val DATABASE_VERSION = 10
+        private const val DATABASE_VERSION = 11
         private const val DATABASE_NAME = "AppDatabase.db"
         private const val TABLE_RESTAURANT = "restaurant"
         private const val TABLE_REVIEW = "review"
@@ -225,6 +225,16 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
                     Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
                     Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
                     Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
+                    Review("OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD ", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
                     Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
                 )
 
