@@ -5,7 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.annotation.DrawableRes
 
-class User(val username: String, val userID: Int, val imagePath: String) {
+class User(val username: String, val userID: Int, val imagePath: String, val password: String) {
     fun getUserPfpFromPath(context: Context, @DrawableRes defaultImageResId: Int): Bitmap {
         return try {
             val inputStream = context.assets.open(imagePath)
