@@ -1,5 +1,6 @@
 package com.example.cw
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -47,10 +48,16 @@ class CreateAccount : AppCompatActivity() {
 
             val isSuccess = appDatabase.addUser(newUser)
             if (isSuccess) {
-                showSnackbar("Account created")
+                showSnackbar("Account created, please login")
             } else {
                 showSnackbar("Error occurred, please try again")
             }
+        }
+
+        val createAccountButton: Button = findViewById(R.id.loginButton2)
+        createAccountButton.setOnClickListener {
+            val intent = Intent(this, Login::class.java)
+            startActivity(intent)
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import com.example.cw.CurrentUser.currentUser
 import com.google.android.material.snackbar.Snackbar
 import org.mindrot.jbcrypt.BCrypt
 
@@ -36,6 +37,7 @@ class Login : AppCompatActivity() {
             }
 
             if (BCrypt.checkpw(password, user.password)) {
+                currentUser = user
                 showSnackbar("Logged in as $username")
             } else {
                 showSnackbar("Wrong password")
