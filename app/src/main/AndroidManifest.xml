@@ -13,7 +13,7 @@
         android:theme="@style/Theme.CW"
         tools:targetApi="31">
         <activity
-            android:name=".CreateAccount"
+            android:name=".Login"
             android:exported="true" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -22,12 +22,15 @@
         </intent-filter>
         </activity>
         <activity
+            android:name=".CreateAccount"
+            android:exported="false">
+        </activity>
+        <activity
             android:name=".RestaurantViewActivity"
             android:exported="false" />
         <activity
             android:name=".RestaurantListActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".MainActivity3"
             android:exported="false" />

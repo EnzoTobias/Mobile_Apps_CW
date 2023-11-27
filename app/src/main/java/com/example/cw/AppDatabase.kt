@@ -110,6 +110,26 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         return user
     }
 
+    fun getUserByName(userName: String): User {
+        val db = this.readableDatabase
+
+        val query = "SELECT * FROM $TABLE_USER WHERE $COLUMN_USERNAME = ?"
+        val cursor = db.rawQuery(query, arrayOf(userName))
+
+        var user = User("", 0, "", "")
+        if (cursor.moveToFirst()) {
+            val userID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
+            val imgPath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE_PATH))
+            val password = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD))
+            user = User(userName, userID, imgPath, password)
+        }
+
+        cursor.close()
+        db.close()
+
+        return user
+    }
+
     fun getRestaurantById(restaurantID: Int): Restaurant {
         val db = this.readableDatabase
         val query = "SELECT * FROM $TABLE_RESTAURANT WHERE $COLUMN_RESTAURANT_ID = ?"

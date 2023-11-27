@@ -19,7 +19,7 @@ class CreateAccount : AppCompatActivity() {
 
         usernameInput = findViewById(R.id.usernameInput)
         passwordInput = findViewById(R.id.passwordInput)
-        createButton = findViewById(R.id.createButton)
+        createButton = findViewById(R.id.loginButton)
 
         appDatabase = AppDatabase(this)
 
