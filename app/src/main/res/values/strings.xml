@@ -19,6 +19,7 @@
     <string name="editReview">Edit Review</string>
     <string name="enterReview">Enter Review</string>
     <string name="submitReview">Submit Review</string>
+    <string name="createReview">Create Review</string>
     <string name="review">
         Mixed experience.
         The service was great but the duck we were served was still quacking!</string>

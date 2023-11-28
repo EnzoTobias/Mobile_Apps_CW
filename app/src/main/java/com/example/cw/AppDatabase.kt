@@ -66,13 +66,13 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
     }
 
 
-    fun addReview(review: Review, user: User): Boolean {
+    fun addReview(review: Review): Boolean {
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.put(COLUMN_RESTAURANT_ID, review.restaurant.restaurantID)
         contentValues.put(COLUMN_TEXT, review.text)
         contentValues.put(COLUMN_RATING, review.rating)
-        contentValues.put(COLUMN_USER_ID, user.userID)
+        contentValues.put(COLUMN_USER_ID, review.user.userID)
         val insertedId = db.insert(TABLE_REVIEW, null, contentValues)
         db.close()
         return insertedId != -1L
@@ -169,6 +169,20 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         db.close()
 
         return review
+    }
+
+    fun deleteUserByID(userID: Int): Boolean {
+        val db = this.writableDatabase
+        val deletedRows = db.delete(TABLE_USER, "$COLUMN_USER_ID = ?", arrayOf(userID.toString()))
+        db.close()
+        return deletedRows > 0
+    }
+
+    fun deleteReviewByID(reviewID: Int): Boolean {
+        val db = this.writableDatabase
+        val deletedRows = db.delete(TABLE_REVIEW, "$COLUMN_REVIEW_ID = ?", arrayOf(reviewID.toString()))
+        db.close()
+        return deletedRows > 0
     }
     fun reviewsByRestaurant(restaurantID: Int): ArrayList<Review> {
         val reviewsForRestaurant = ArrayList<Review>()
@@ -391,6 +405,24 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         db.close()
 
         return isTaken
+    }
+
+    fun updateReview(review: Review): Boolean {
+        val db = this.writableDatabase
+
+        val existingReview = getReviewById(review.reviewID)
+
+        if (existingReview != null) {
+            val deleted = deleteReviewByID(review.reviewID)
+
+            if (deleted) {
+                val user = existingReview.user
+                return addReview(review)
+            }
+        }
+
+        db.close()
+        return false
     }
 
 
