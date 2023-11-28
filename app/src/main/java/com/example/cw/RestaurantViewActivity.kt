@@ -40,7 +40,7 @@ class RestaurantViewActivity : AppCompatActivity() {
         val mainLinear = findViewById<LinearLayout>(R.id.mainLinear)
 
         for (review in reviewsList) {
-            val reviewLayout = inflater.inflate(R.layout.restaurant_review, mainLinear, false)
+            val reviewLayout = inflater.inflate(R.layout.review, mainLinear, false)
 
             val userPfp = reviewLayout.findViewById<ImageView>(R.id.userPfp)
             val userName = reviewLayout.findViewById<TextView>(R.id.userName)

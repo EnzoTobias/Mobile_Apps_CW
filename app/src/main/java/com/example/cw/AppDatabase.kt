@@ -148,6 +148,28 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
 
         return restaurant
     }
+
+    fun getReviewById(reviewID: Int): Review? {
+        val db = this.readableDatabase
+        var review: Review? = null
+        val query = "SELECT * FROM $TABLE_REVIEW WHERE $COLUMN_REVIEW_ID = ?"
+        val cursor = db.rawQuery(query, arrayOf(reviewID.toString()))
+
+        if (cursor.moveToFirst()) {
+            val text = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TEXT))
+            val rating = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RATING))
+            val restaurantID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RESTAURANT_ID))
+            val userID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
+            val restaurant = getRestaurantById(restaurantID)
+            val user = getUserById(userID)
+            review = Review(text, reviewID, restaurant, rating, user)
+        }
+
+        cursor.close()
+        db.close()
+
+        return review
+    }
     fun reviewsByRestaurant(restaurantID: Int): ArrayList<Review> {
         val reviewsForRestaurant = ArrayList<Review>()
         val db = this.readableDatabase
