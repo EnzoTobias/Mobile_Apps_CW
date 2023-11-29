@@ -101,7 +101,10 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
             val username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME))
             val imgPath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE_PATH))
             val password = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD))
-            user = User(username, userID, imgPath, password)
+            val safeUsername = username ?: ""
+            val safeImgPath = imgPath ?: ""
+            val safePassword = password ?: ""
+            user = User(safeUsername, userID, safeImgPath, safePassword)
         }
 
         cursor.close()
