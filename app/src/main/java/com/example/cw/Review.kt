@@ -2,6 +2,7 @@ package com.example.cw
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.widget.ImageView
@@ -11,7 +12,7 @@ import androidx.core.view.isVisible
 import android.widget.PopupMenu
 import androidx.core.content.ContextCompat.startActivity
 
-class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, var rating: Int, var user: User) {
+class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, var rating: Int, var user: User, var images: String) {
     companion object {
         fun displayStars(score: Double, vararg stars: ImageView) {
             val roundedScore = score.toInt()
@@ -83,6 +84,33 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
                 }
 
                 linear.addView(reviewLayout)
+            }
+        }
+
+
+        fun displayReviewImagesInLinearLayout(imagePaths: String, context: Context, imagesLinear: LinearLayout) {
+            val paths = imagePaths.split(";")
+
+            for (path in paths) {
+                if (path.isNotEmpty()) {
+                    val imageView = ImageView(context)
+                    val bitmap = BitmapFactory.decodeFile(path)
+
+                    if (bitmap != null) {
+                        imageView.setImageBitmap(bitmap)
+                        imageView.adjustViewBounds = true
+                        imageView.scaleType = ImageView.ScaleType.FIT_XY
+
+                        val layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        layoutParams.setMargins(8, 0, 8, 0)
+                        imageView.layoutParams = layoutParams
+
+                        imagesLinear.addView(imageView)
+                    }
+                }
             }
         }
 

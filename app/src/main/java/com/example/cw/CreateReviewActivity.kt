@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 
@@ -22,6 +23,9 @@ class CreateReviewActivity : AppCompatActivity() {
     private var receivedUserID: Int = 0
     private lateinit var db: AppDatabase
     private lateinit var review: Review
+    private lateinit var uploadImagesButton: Button
+    private lateinit var imagesLinear: LinearLayout
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +38,9 @@ class CreateReviewActivity : AppCompatActivity() {
         starImage3 = findViewById(R.id.starImage3)
         starImage4 = findViewById(R.id.starImage4)
         starImage5 = findViewById(R.id.starImage5)
+        uploadImagesButton = findViewById(R.id.uploadImagesButton)
+        imagesLinear = findViewById(R.id.imagesLinear)
+
         db = AppDatabase(this)
 
         val receivedIntent = intent
@@ -41,7 +48,7 @@ class CreateReviewActivity : AppCompatActivity() {
         receivedUserID = receivedIntent.getIntExtra("USER_ID", 0)
         val restaurant = db.getRestaurantById(receivedResID)
         val user = db.getUserById(receivedUserID)
-        review = Review("", db.getFreeReviewID(), restaurant,1, user)
+        review = Review("", db.getFreeReviewID(), restaurant,1, user, "")
 
         reviewInput.setText(review?.text ?: "")
         Review.displayStars(review.rating.toDouble(), starImage1, starImage2, starImage3, starImage4, starImage5)
@@ -51,6 +58,10 @@ class CreateReviewActivity : AppCompatActivity() {
         starImage3.setOnClickListener { setRatingAndDisplayStars(3) }
         starImage4.setOnClickListener { setRatingAndDisplayStars(4) }
         starImage5.setOnClickListener { setRatingAndDisplayStars(5) }
+
+        uploadImagesButton.setOnClickListener {
+            ImageHandler.pickImagesFromGallery(this@CreateReviewActivity)
+        }
 
         submitReview.setOnClickListener {
             var finish: Boolean = false
@@ -77,6 +88,15 @@ class CreateReviewActivity : AppCompatActivity() {
                 ContextCompat.startActivity(this, intent, null)
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ImageHandler.REQUEST_IMAGE_PICK && resultCode == RESULT_OK) {
+            val imagePaths = ImageHandler.handleImagePickerResult(this@CreateReviewActivity, data)
+            review.images = imagePaths
+        }
+        Review.displayReviewImagesInLinearLayout(review.images, this, imagesLinear)
     }
 
     private fun setRatingAndDisplayStars(rating: Int) {

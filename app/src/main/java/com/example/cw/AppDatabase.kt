@@ -9,7 +9,7 @@ import kotlin.random.Random
 
 class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
-        private const val DATABASE_VERSION = 13
+        private const val DATABASE_VERSION = 18
         private const val DATABASE_NAME = "AppDatabase.db"
         private const val TABLE_RESTAURANT = "restaurant"
         private const val TABLE_REVIEW = "review"
@@ -24,12 +24,14 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         private const val COLUMN_USERNAME = "username"
         private const val COLUMN_DESCRIPTION = "description"
         private const val COLUMN_PASSWORD = "password"
+        private const val COLUMN_IMAGES = "images"
+
     }
 
     override fun onCreate(db: SQLiteDatabase) {
         val createRestaurantTableQuery = ("CREATE TABLE $TABLE_RESTAURANT " +
                 "($COLUMN_RESTAURANT_ID INTEGER PRIMARY KEY, $COLUMN_NAME TEXT, " +
-                "$COLUMN_IMAGE_PATH TEXT, $COLUMN_DESCRIPTION TEXT)") // Add COLUMN_DESCRIPTION
+                "$COLUMN_IMAGE_PATH TEXT, $COLUMN_DESCRIPTION TEXT)")
         db.execSQL(createRestaurantTableQuery)
 
         val createUserTableQuery = ("CREATE TABLE $TABLE_USER " +
@@ -39,7 +41,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
 
         val createReviewTableQuery = ("CREATE TABLE $TABLE_REVIEW " +
                 "($COLUMN_REVIEW_ID INTEGER PRIMARY KEY, $COLUMN_RESTAURANT_ID INTEGER, " +
-                "$COLUMN_TEXT TEXT, $COLUMN_RATING INTEGER, $COLUMN_USER_ID INTEGER, " +
+                "$COLUMN_TEXT TEXT, $COLUMN_RATING INTEGER, $COLUMN_USER_ID INTEGER, $COLUMN_IMAGES TEXT, " +
                 "FOREIGN KEY($COLUMN_RESTAURANT_ID) REFERENCES $TABLE_RESTAURANT($COLUMN_RESTAURANT_ID), " +
                 "FOREIGN KEY($COLUMN_USER_ID) REFERENCES $TABLE_USER($COLUMN_USER_ID))")
         db.execSQL(createReviewTableQuery)
@@ -59,7 +61,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         val contentValues = ContentValues()
         contentValues.put(COLUMN_NAME, restaurant.name)
         contentValues.put(COLUMN_IMAGE_PATH, restaurant.imagePath)
-        contentValues.put(COLUMN_DESCRIPTION, restaurant.description) // Add description field
+        contentValues.put(COLUMN_DESCRIPTION, restaurant.description)
         val insertedId = db.insert(TABLE_RESTAURANT, null, contentValues)
         db.close()
         return insertedId != -1L
@@ -73,6 +75,8 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         contentValues.put(COLUMN_TEXT, review.text)
         contentValues.put(COLUMN_RATING, review.rating)
         contentValues.put(COLUMN_USER_ID, review.user.userID)
+        contentValues.put(COLUMN_IMAGES, review.images)
+
         val insertedId = db.insert(TABLE_REVIEW, null, contentValues)
         db.close()
         return insertedId != -1L
@@ -163,9 +167,10 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
             val rating = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RATING))
             val restaurantID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RESTAURANT_ID))
             val userID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
+            val images = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGES))
             val restaurant = getRestaurantById(restaurantID)
             val user = getUserById(userID)
-            review = Review(text, reviewID, restaurant, rating, user)
+            review = Review(text, reviewID, restaurant, rating, user, images)
         }
 
         cursor.close()
@@ -200,7 +205,8 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
             val rating = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RATING))
             val restaurant = getRestaurantById(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RESTAURANT_ID)))
             val user = getUserById(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID)))
-            val review = Review(text, reviewID, restaurant, rating, user)
+            val images = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGES))
+            val review = Review(text, reviewID, restaurant, rating, user, images)
             reviewsForRestaurant.add(review)
         }
 
@@ -222,11 +228,12 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
             val text = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TEXT))
             val restaurantID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RESTAURANT_ID))
             val rating = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RATING))
+            val images = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGES))
 
             val restaurant = getRestaurantById(restaurantID)
             val user = getUserById(userID)
 
-            val review = Review(text, reviewID, restaurant, rating, user)
+            val review = Review(text, reviewID, restaurant, rating, user, images)
             reviewsByUser.add(review)
         }
 
@@ -271,7 +278,8 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
                 Restaurant("Restaurant B", 12, "","f00dzzz"),
                 Restaurant("Restaurant C", 13, "","f00d"),
                 Restaurant("Restaurant D", 14, "","f00d"),
-                Restaurant("Restaurant E", 15, "","f00d")
+                Restaurant("Restaurant E", 15, "","f00d"),
+                Restaurant("ZERO", 0, "","0000")
             )
             val dummyUser = User("troll",0,"", "")
             for (restaurant in dummyRestaurants) {
@@ -288,20 +296,20 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
                 userContentValues.put(COLUMN_IMAGE_PATH, dummyUser.imagePath)
                 db.insert(TABLE_USER, null, userContentValues)
                 val dummyReviews = listOf(
-                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
-                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
-                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
-                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
-                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
-                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
-                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
-                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
-                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
-                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
-                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
-                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
-                    Review("OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD ", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
-                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser, " "),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser, " "),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser, " "),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser, " "),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser, " "),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser, " "),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser, " "),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser, " "),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser, " "),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser, " "),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser, " "),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser, " "),
+                    Review("OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD OMG SO BAD ", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser, " "),
+                    Review("TEST", Random.nextInt(0, 9999), restaurant, Random.nextInt(0, 6), dummyUser, " "),
                 )
 
                 for (review in dummyReviews) {
@@ -310,6 +318,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
                     reviewValues.put(COLUMN_TEXT, review.text)
                     reviewValues.put(COLUMN_RATING, review.rating)
                     reviewValues.put(COLUMN_USER_ID, review.user.userID)
+                    reviewValues.put(COLUMN_IMAGES, review.images)
 
                     db.insert(TABLE_REVIEW, null, reviewValues)
                 }
