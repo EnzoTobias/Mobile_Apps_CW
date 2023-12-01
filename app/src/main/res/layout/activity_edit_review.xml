@@ -20,9 +20,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout3"
-        android:layout_width="409dp"
+        android:layout_width="0dp"
         android:layout_height="500dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
         android:textAlignment="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,9 +34,12 @@
             android:id="@+id/reviewInput"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="top|left"
             android:hint="@string/enterReview"
             android:maxLength="8000"
-            android:textAlignment="textStart" />
+            android:inputType="textAutoCorrect|textMultiLine"
+            android:imeOptions="actionSend"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

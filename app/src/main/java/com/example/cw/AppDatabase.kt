@@ -9,7 +9,7 @@ import kotlin.random.Random
 
 class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
-        private const val DATABASE_VERSION = 12
+        private const val DATABASE_VERSION = 13
         private const val DATABASE_NAME = "AppDatabase.db"
         private const val TABLE_RESTAURANT = "restaurant"
         private const val TABLE_REVIEW = "review"
@@ -273,7 +273,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
                 Restaurant("Restaurant D", 14, "","f00d"),
                 Restaurant("Restaurant E", 15, "","f00d")
             )
-            val dummyUser = User("troll",1,"", "")
+            val dummyUser = User("troll",0,"", "")
             for (restaurant in dummyRestaurants) {
                 val contentValues = ContentValues()
                 contentValues.put(COLUMN_RESTAURANT_ID, restaurant.restaurantID)

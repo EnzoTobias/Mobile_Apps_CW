@@ -1,10 +1,12 @@
 package com.example.cw
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 
 class CreateReviewActivity : AppCompatActivity() {
@@ -23,7 +25,7 @@ class CreateReviewActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_review)
+        setContentView(R.layout.activity_create_review)
 
         reviewInput = findViewById(R.id.reviewInput)
         submitReview = findViewById(R.id.submitReviewButton)
@@ -39,7 +41,7 @@ class CreateReviewActivity : AppCompatActivity() {
         receivedUserID = receivedIntent.getIntExtra("USER_ID", 0)
         val restaurant = db.getRestaurantById(receivedResID)
         val user = db.getUserById(receivedUserID)
-        review = Review("", 0, restaurant,1, user)
+        review = Review("", db.getFreeReviewID(), restaurant,1, user)
 
         reviewInput.setText(review?.text ?: "")
         Review.displayStars(review.rating.toDouble(), starImage1, starImage2, starImage3, starImage4, starImage5)
@@ -70,7 +72,9 @@ class CreateReviewActivity : AppCompatActivity() {
                 showSnackbar("Review must be longer than 3 characters")
             }
             if (finish) {
-                finish()
+                val intent = Intent(this, RestaurantViewActivity::class.java)
+                intent.putExtra("RESTAURANT_ID", restaurant.restaurantID)
+                ContextCompat.startActivity(this, intent, null)
             }
         }
     }

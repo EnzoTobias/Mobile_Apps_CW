@@ -1,11 +1,15 @@
 package com.example.cw
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 
 class RestaurantViewActivity : AppCompatActivity() {
     var receivedResID: Int = 0
@@ -21,6 +25,7 @@ class RestaurantViewActivity : AppCompatActivity() {
         val starImage4: ImageView = findViewById(R.id.starImage4)
         val starImage5: ImageView = findViewById(R.id.starImage5)
         val mainLinear = findViewById<LinearLayout>(R.id.mainLinear)
+        val reviewButton = findViewById<Button>(R.id.reviewButton)
         val receivedIntent = intent
         receivedResID = receivedIntent.getIntExtra("RESTAURANT_ID", 0)
         val db = AppDatabase(this)
@@ -34,14 +39,22 @@ class RestaurantViewActivity : AppCompatActivity() {
         Review.displayStars(restaurantScore, starImage1, starImage2, starImage3, starImage4, starImage5)
         Review.displayReviewsInLinearLayout(db.reviewsByRestaurant(receivedResID),this, mainLinear)
 
+        if (CurrentUser.currentUser == null) {
+            //reviewButton.isVisible = false
+        }
+
+        reviewButton.setOnClickListener() {
+            val intent = Intent(this, CreateReviewActivity::class.java)
+            intent.putExtra("RESTAURANT_ID", restaurant.restaurantID)
+            intent.putExtra("USER_ID", 0)
+            ContextCompat.startActivity(this, intent, null)
+
+        }
+
+
+
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        val db = AppDatabase(this)
-        val mainLinear = findViewById<LinearLayout>(R.id.mainLinear)
-        Review.displayReviewsInLinearLayout(db.reviewsByRestaurant(receivedResID),this, mainLinear)
-    }
 
 }

@@ -1,11 +1,13 @@
 package com.example.cw
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 
 class EditReviewActivity : AppCompatActivity() {
@@ -67,7 +69,9 @@ class EditReviewActivity : AppCompatActivity() {
                 showSnackbar("Review must be longer than 3 characters")
             }
             if (finish) {
-                finish()
+                val intent = Intent(this, RestaurantViewActivity::class.java)
+                intent.putExtra("RESTAURANT_ID", review.restaurant.restaurantID)
+                ContextCompat.startActivity(this, intent, null)
             }
         }
     }
