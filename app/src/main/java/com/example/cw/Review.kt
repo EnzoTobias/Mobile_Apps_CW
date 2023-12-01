@@ -20,8 +20,10 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
                 if (i < roundedScore) {
                     stars[i].setImageResource(R.drawable.star4review)
                     stars[i].isVisible = true
+                    stars[i].setImageResource(R.drawable.star4review)
                 } else {
-                    stars[i].isVisible = false
+                    stars[i].isVisible = true
+                    stars[i].setImageResource(R.drawable.star4reviewblank)
                 }
             }
         }
@@ -36,11 +38,19 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
                 val userName = reviewLayout.findViewById<TextView>(R.id.userName)
                 val reviewText = reviewLayout.findViewById<TextView>(R.id.reviewText)
                 val moreOptions = reviewLayout.findViewById<ImageView>(R.id.moreOptions)
+                val s1 = reviewLayout.findViewById<ImageView>(R.id.starImage1)
+                val s2 = reviewLayout.findViewById<ImageView>(R.id.starImage2)
+                val s3 = reviewLayout.findViewById<ImageView>(R.id.starImage3)
+                val s4 = reviewLayout.findViewById<ImageView>(R.id.starImage4)
+                val s5 = reviewLayout.findViewById<ImageView>(R.id.starImage5)
                 val user = review.user
 
                 userPfp.setImageBitmap(user.getUserPfpFromPath(context, R.drawable.reyzel_lezyer_photo_of_a_duck_soup_photorealistic_ad89f309_f9b3_4717_abda_a89ba176c68b))
                 userName.text = review.user.username
                 reviewText.text = review.text
+
+                Review.displayStars(review.rating.toDouble(), s1, s2, s3, s4, s5)
+
 
                 moreOptions.setOnClickListener {
                     val popupMenu = PopupMenu(context, moreOptions)
@@ -51,7 +61,7 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
                     if (currentUser != null && currentUser.userID == review.user.userID) {
                         popupMenu.menu.findItem(R.id.edit_review_option).isVisible = true
                     } else {
-                        popupMenu.menu.findItem(R.id.edit_review_option).isVisible = false
+                        popupMenu.menu.findItem(R.id.edit_review_option).isVisible = true
                     }
 
                     popupMenu.setOnMenuItemClickListener { item: MenuItem ->

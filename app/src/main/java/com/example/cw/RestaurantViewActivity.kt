@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 
 class RestaurantViewActivity : AppCompatActivity() {
+    var receivedResID: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_restaurant_view)
@@ -21,7 +22,7 @@ class RestaurantViewActivity : AppCompatActivity() {
         val starImage5: ImageView = findViewById(R.id.starImage5)
         val mainLinear = findViewById<LinearLayout>(R.id.mainLinear)
         val receivedIntent = intent
-        val receivedResID = receivedIntent.getIntExtra("RESTAURANT_ID", 0)
+        receivedResID = receivedIntent.getIntExtra("RESTAURANT_ID", 0)
         val db = AppDatabase(this)
         val restaurant: Restaurant
         restaurant = db.getRestaurantById(receivedResID)
@@ -34,6 +35,13 @@ class RestaurantViewActivity : AppCompatActivity() {
         Review.displayReviewsInLinearLayout(db.reviewsByRestaurant(receivedResID),this, mainLinear)
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val db = AppDatabase(this)
+        val mainLinear = findViewById<LinearLayout>(R.id.mainLinear)
+        Review.displayReviewsInLinearLayout(db.reviewsByRestaurant(receivedResID),this, mainLinear)
     }
 
 }

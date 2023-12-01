@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 
@@ -11,8 +12,14 @@ class EditReviewActivity : AppCompatActivity() {
 
     private lateinit var reviewInput: EditText
     private lateinit var submitReview: Button
+    private lateinit var starImage1: ImageView
+    private lateinit var starImage2: ImageView
+    private lateinit var starImage3: ImageView
+    private lateinit var starImage4: ImageView
+    private lateinit var starImage5: ImageView
     private var receivedRevID: Int = 0
     private lateinit var db: AppDatabase
+    private lateinit var review: Review
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,13 +27,28 @@ class EditReviewActivity : AppCompatActivity() {
 
         reviewInput = findViewById(R.id.reviewInput)
         submitReview = findViewById(R.id.submitReviewButton)
+        starImage1 = findViewById(R.id.starImage1)
+        starImage2 = findViewById(R.id.starImage2)
+        starImage3 = findViewById(R.id.starImage3)
+        starImage4 = findViewById(R.id.starImage4)
+        starImage5 = findViewById(R.id.starImage5)
         db = AppDatabase(this)
+
         val receivedIntent = intent
         receivedRevID = receivedIntent.getIntExtra("REVIEW_ID", 0)
-        val review = db.getReviewById(receivedRevID)
+        review = db.getReviewById(receivedRevID)!!
+
         reviewInput.setText(review?.text ?: "")
+        Review.displayStars(review.rating.toDouble(), starImage1, starImage2, starImage3, starImage4, starImage5)
+
+        starImage1.setOnClickListener { setRatingAndDisplayStars(1) }
+        starImage2.setOnClickListener { setRatingAndDisplayStars(2) }
+        starImage3.setOnClickListener { setRatingAndDisplayStars(3) }
+        starImage4.setOnClickListener { setRatingAndDisplayStars(4) }
+        starImage5.setOnClickListener { setRatingAndDisplayStars(5) }
 
         submitReview.setOnClickListener {
+            var finish: Boolean = false
             val newReviewText = reviewInput.text.toString()
 
             if (newReviewText.length > 3) {
@@ -36,6 +58,7 @@ class EditReviewActivity : AppCompatActivity() {
 
                     if (updated) {
                         showSnackbar("Review updated")
+                        finish = true
                     } else {
                         showSnackbar("Failed to update review")
                     }
@@ -43,7 +66,15 @@ class EditReviewActivity : AppCompatActivity() {
             } else {
                 showSnackbar("Review must be longer than 3 characters")
             }
+            if (finish) {
+                finish()
+            }
         }
+    }
+
+    private fun setRatingAndDisplayStars(rating: Int) {
+        review.rating = rating
+        Review.displayStars(rating.toDouble(), starImage1, starImage2, starImage3, starImage4, starImage5)
     }
 
     private fun showSnackbar(message: String) {
