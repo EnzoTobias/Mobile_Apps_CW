@@ -90,6 +90,7 @@ class CreateReviewActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ImageHandler.REQUEST_IMAGE_PICK && resultCode == RESULT_OK) {
@@ -106,5 +107,13 @@ class CreateReviewActivity : AppCompatActivity() {
 
     private fun showSnackbar(message: String) {
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    fun replaceReviewImages(paths: String) {
+        review.images = paths
+    }
+
+    fun displayImages() {
+        Review.displayReviewImagesInLinearLayout(review.images, this, imagesLinear)
     }
 }

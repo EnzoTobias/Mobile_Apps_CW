@@ -84,4 +84,8 @@ class EditReviewActivity : AppCompatActivity() {
     private fun showSnackbar(message: String) {
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
     }
+
+    fun replaceReviewImages(paths: String) {
+        review.images = paths
+    }
 }

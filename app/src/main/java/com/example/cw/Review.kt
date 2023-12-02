@@ -3,6 +3,7 @@ package com.example.cw
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.widget.ImageView
@@ -11,6 +12,9 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import android.widget.PopupMenu
 import androidx.core.content.ContextCompat.startActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+
 
 class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, var rating: Int, var user: User, var images: String) {
     companion object {
@@ -90,8 +94,8 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
 
         fun displayReviewImagesInLinearLayout(imagePaths: String, context: Context, imagesLinear: LinearLayout) {
             val paths = imagePaths.split(";")
-
-            for (path in paths) {
+            imagesLinear.removeAllViews()
+            for ((index, path) in paths.withIndex()) {
                 if (path.isNotEmpty()) {
                     val imageView = ImageView(context)
                     val bitmap = BitmapFactory.decodeFile(path)
@@ -108,10 +112,33 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
                         layoutParams.setMargins(8, 0, 8, 0)
                         imageView.layoutParams = layoutParams
 
+                        imageView.setOnClickListener {
+                            val dialog = EnlargedImageDialogFragment()
+                            val bundle = Bundle()
+                            bundle.putString("imagePath", path)
+                            bundle.putInt("index", index)
+                            dialog.arguments = bundle
+
+                            if (context is AppCompatActivity) {
+                                val fragmentManager = context.supportFragmentManager
+                                dialog.show(fragmentManager, "enlarged_image_dialog")
+                            }
+                        }
+
                         imagesLinear.addView(imageView)
                     }
                 }
             }
+        }
+
+        fun removeImagePathAtIndex(imagePaths: String, indexToRemove: Int): String {
+            val paths = imagePaths.split(";")
+            if (indexToRemove >= 0 && indexToRemove < paths.size) {
+                val updatedPaths = paths.toMutableList()
+                updatedPaths.removeAt(indexToRemove)
+                return updatedPaths.joinToString(";")
+            }
+            return imagePaths
         }
 
     }

@@ -13,7 +13,7 @@
     <string name="reviews">Reviews:</string>
     <string name="enterUsername">Enter Username</string>
     <string name="enterPassword">Enter Password</string>
-    <string name="createAccount">Create an Account</string>
+    <string name="createAccount">Create an Account</string>s
     <string name="createAccountButton">Create Account</string>
     <string name="login">Login</string>
     <string name="editReview">Edit Review</string>
@@ -21,6 +21,8 @@
     <string name="submitReview">Submit Review</string>
     <string name="createReview">Create Review</string>
     <string name="uploadImages">Upload Images</string>
+    <string name="close">Close</string>
+    <string name="delete">Delete</string>
     <string name="review">
         Mixed experience.
         The service was great but the duck we were served was still quacking!</string>
