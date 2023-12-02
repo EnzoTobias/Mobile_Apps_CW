@@ -47,6 +47,7 @@ class RestaurantViewActivity : AppCompatActivity() {
             val intent = Intent(this, CreateReviewActivity::class.java)
             intent.putExtra("RESTAURANT_ID", restaurant.restaurantID)
             intent.putExtra("USER_ID", 0)
+            intent.putExtra("CREATE_OR_EDIT", true)
             ContextCompat.startActivity(this, intent, null)
 
         }

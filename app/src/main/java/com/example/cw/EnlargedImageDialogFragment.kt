@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 
 class EnlargedImageDialogFragment : DialogFragment() {
@@ -37,14 +38,14 @@ class EnlargedImageDialogFragment : DialogFragment() {
         }
 
         val deleteButton = view.findViewById<Button>(R.id.deleteButton)
+        if (context !is CreateReviewActivity) {
+            deleteButton.isVisible = false
+        }
         deleteButton.setOnClickListener {
             if (context is CreateReviewActivity) {
                 val createActivity = context as CreateReviewActivity
                 createActivity.replaceReviewImages(Review.removeImagePath(imagePath!!, path!!))
                 createActivity.displayImages()
-            } else if (context is EditReviewActivity) {
-                val editActivity = context as EditReviewActivity
-                editActivity.replaceReviewImages(Review.removeImagePath(imagePath!!, path!!))
             }
             dismiss()
 

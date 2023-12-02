@@ -21,6 +21,8 @@ class CreateReviewActivity : AppCompatActivity() {
     private lateinit var starImage5: ImageView
     private var receivedResID: Int = 0
     private var receivedUserID: Int = 0
+    private var receiveCreateOrEdit: Boolean = true
+    private var receivedRevID: Int = 0
     private lateinit var db: AppDatabase
     private lateinit var review: Review
     private lateinit var uploadImagesButton: Button
@@ -40,18 +42,31 @@ class CreateReviewActivity : AppCompatActivity() {
         starImage5 = findViewById(R.id.starImage5)
         uploadImagesButton = findViewById(R.id.uploadImagesButton)
         imagesLinear = findViewById(R.id.imagesLinear)
+        val restaurant: Restaurant
+        val user: User
 
         db = AppDatabase(this)
 
         val receivedIntent = intent
-        receivedResID = receivedIntent.getIntExtra("RESTAURANT_ID", 0)
-        receivedUserID = receivedIntent.getIntExtra("USER_ID", 0)
-        val restaurant = db.getRestaurantById(receivedResID)
-        val user = db.getUserById(receivedUserID)
-        review = Review("", db.getFreeReviewID(), restaurant,1, user, "")
+        receiveCreateOrEdit = receivedIntent.getBooleanExtra("CREATE_OR_EDIT", true)
+        if (receiveCreateOrEdit) {
+            receivedResID = receivedIntent.getIntExtra("RESTAURANT_ID", 0)
+            receivedUserID = receivedIntent.getIntExtra("USER_ID", 0)
+            restaurant = db.getRestaurantById(receivedResID)
+            user = db.getUserById(receivedUserID)
+            review = Review("", db.getFreeReviewID(), restaurant,5, user, "")
+        } else {
+            receivedRevID = receivedIntent.getIntExtra("REVIEW_ID", 0)
+            review = db.getReviewById(receivedRevID)!!
+            restaurant = review!!.restaurant
+            user = review.user
+            reviewInput.setText(review?.text ?: "")
+            Review.displayStars(review.rating.toDouble(), starImage1, starImage2, starImage3, starImage4, starImage5)
+            Review.displayReviewImagesInLinearLayout(review.images, this, imagesLinear)
+        }
 
-        reviewInput.setText(review?.text ?: "")
-        Review.displayStars(review.rating.toDouble(), starImage1, starImage2, starImage3, starImage4, starImage5)
+
+
 
         starImage1.setOnClickListener { setRatingAndDisplayStars(1) }
         starImage2.setOnClickListener { setRatingAndDisplayStars(2) }
@@ -70,14 +85,27 @@ class CreateReviewActivity : AppCompatActivity() {
             if (newReviewText.length > 3) {
                 review?.let {
                     it.text = newReviewText
-                    val updated = db.addReview(review)
-
-                    if (updated) {
-                        showSnackbar("Review updated")
-                        finish = true
+                    var updated: Boolean = false
+                    if (receiveCreateOrEdit) {
+                        updated = db.addReview(review)
+                        if (updated) {
+                            showSnackbar("Review submitted")
+                            finish = true
+                        } else {
+                            showSnackbar("Failed to submit review")
+                        }
                     } else {
-                        showSnackbar("Failed to update review")
+                        updated = db.updateReview(review)
+                        if (updated) {
+                            showSnackbar("Review updated")
+                            finish = true
+                        } else {
+                            showSnackbar("Failed to update review")
+                        }
                     }
+
+
+
                 }
             } else {
                 showSnackbar("Review must be longer than 3 characters")

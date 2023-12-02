@@ -48,6 +48,7 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
                 val s3 = reviewLayout.findViewById<ImageView>(R.id.starImage3)
                 val s4 = reviewLayout.findViewById<ImageView>(R.id.starImage4)
                 val s5 = reviewLayout.findViewById<ImageView>(R.id.starImage5)
+                val imagesLayout = reviewLayout.findViewById<LinearLayout>(R.id.imagesLinearReview)
                 val user = review.user
 
                 userPfp.setImageBitmap(user.getUserPfpFromPath(context, R.drawable.reyzel_lezyer_photo_of_a_duck_soup_photorealistic_ad89f309_f9b3_4717_abda_a89ba176c68b))
@@ -55,7 +56,10 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
                 reviewText.text = review.text
 
                 Review.displayStars(review.rating.toDouble(), s1, s2, s3, s4, s5)
-
+                Review.displayReviewImagesInLinearLayout(review.images, context, imagesLayout)
+                if (review.images == "" || review.images == " ") {
+                    imagesLayout.isVisible = false
+                }
 
                 moreOptions.setOnClickListener {
                     val popupMenu = PopupMenu(context, moreOptions)
@@ -75,8 +79,9 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
                                 true
                             }
                             R.id.edit_review_option -> {
-                                val intent = Intent(context, EditReviewActivity::class.java)
+                                val intent = Intent(context, CreateReviewActivity::class.java)
                                 intent.putExtra("REVIEW_ID", review.reviewID)
+                                intent.putExtra("CREATE_OR_EDIT", false)
                                 startActivity(context, intent, null)
                                 true
                             }

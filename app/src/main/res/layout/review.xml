@@ -7,6 +7,25 @@
     android:layout_marginTop="5dp"
     android:background="#D6D6D6">
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="150dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reviewText">
+
+        <LinearLayout
+            android:id="@+id/imagesLinearReview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintHeight_max="150dp"></LinearLayout>
+    </HorizontalScrollView>
+
     <ImageView
         android:id="@+id/starImage1"
         android:layout_width="20dp"
