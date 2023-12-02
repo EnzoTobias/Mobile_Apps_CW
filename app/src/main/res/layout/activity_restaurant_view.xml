@@ -19,6 +19,7 @@
         android:id="@+id/mainScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
         android:layout_marginBottom="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -131,5 +132,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
         </LinearLayout>
     </ScrollView>
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/generalToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="?attr/colorPrimary"
+        android:gravity="left"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/topbar_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

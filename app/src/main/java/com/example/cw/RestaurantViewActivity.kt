@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 
-class RestaurantViewActivity : AppCompatActivity() {
+class RestaurantViewActivity : BasicActivity() {
     var receivedResID: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +54,10 @@ class RestaurantViewActivity : AppCompatActivity() {
 
 
 
+    }
 
+    override fun getLayoutID(): Int {
+        return R.layout.activity_restaurant_view
     }
 
 

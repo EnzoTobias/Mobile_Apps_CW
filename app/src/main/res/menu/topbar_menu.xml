@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:name="topbar_menu">
+    <item
+        android:id="@+id/action_home"
+        android:icon="@drawable/home"
+        android:title="Home"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_account"
+        android:icon="@drawable/account"
+        android:title="Account"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_filter"
+        android:icon="@drawable/filter"
+        android:title="Filter"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/filter_option_1"
+                android:title="Sort by review score" />
+            <item
+                android:id="@+id/filter_option_2"
+                android:title="Sort by amount of reviews" />
+            <item
+                android:id="@+id/filter_option_3"
+                android:title="Sort by restaurant name" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/action_search"
+        app:icon="@drawable/search"
+        android:title="Search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="always" />
+
+
+</menu>
