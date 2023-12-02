@@ -115,8 +115,8 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
                         imageView.setOnClickListener {
                             val dialog = EnlargedImageDialogFragment()
                             val bundle = Bundle()
-                            bundle.putString("imagePath", path)
-                            bundle.putInt("index", index)
+                            bundle.putString("imagePath", imagePaths)
+                            bundle.putString("path", path)
                             dialog.arguments = bundle
 
                             if (context is AppCompatActivity) {
@@ -131,14 +131,12 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
             }
         }
 
-        fun removeImagePathAtIndex(imagePaths: String, indexToRemove: Int): String {
+        fun removeImagePath(imagePaths: String, pathToRemove: String): String {
             val paths = imagePaths.split(";")
-            if (indexToRemove >= 0 && indexToRemove < paths.size) {
-                val updatedPaths = paths.toMutableList()
-                updatedPaths.removeAt(indexToRemove)
-                return updatedPaths.joinToString(";")
-            }
-            return imagePaths
+            val updatedPaths = paths.toMutableList()
+            updatedPaths.remove(pathToRemove)
+            return updatedPaths.joinToString(";")
+
         }
 
     }

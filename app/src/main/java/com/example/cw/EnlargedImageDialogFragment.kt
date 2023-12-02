@@ -27,9 +27,9 @@ class EnlargedImageDialogFragment : DialogFragment() {
         val context = requireContext()
         val imageView = view.findViewById<ImageView>(R.id.enlargedImage)
         val imagePath = arguments?.getString("imagePath")
-        val index = arguments?.getInt("index")
+        val path = arguments?.getString("path")
 
-        val bitmap = BitmapFactory.decodeFile(imagePath)
+        val bitmap = BitmapFactory.decodeFile(path)
         imageView.setImageBitmap(bitmap)
 
         view.setOnClickListener {
@@ -40,11 +40,11 @@ class EnlargedImageDialogFragment : DialogFragment() {
         deleteButton.setOnClickListener {
             if (context is CreateReviewActivity) {
                 val createActivity = context as CreateReviewActivity
-                createActivity.replaceReviewImages(Review.removeImagePathAtIndex(imagePath!!, index!!))
+                createActivity.replaceReviewImages(Review.removeImagePath(imagePath!!, path!!))
                 createActivity.displayImages()
             } else if (context is EditReviewActivity) {
                 val editActivity = context as EditReviewActivity
-                editActivity.replaceReviewImages(Review.removeImagePathAtIndex(imagePath!!, index!!))
+                editActivity.replaceReviewImages(Review.removeImagePath(imagePath!!, path!!))
             }
             dismiss()
 
