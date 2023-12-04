@@ -40,18 +40,14 @@ class RestaurantListActivity : BasicActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val intent = result.data
                 if (intent != null) {
-                    StrictMode.setThreadPolicy(
-                        StrictMode.ThreadPolicy.Builder()
-                            .permitAll()
-                            .build()
-                    )
 
                     val db = AppDatabase(this)
-                    db.populateDummyRestaurants()
                     val place = Autocomplete.getPlaceFromIntent(intent)
                     val placeID = place.id
                     val placeDetailsUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid=$placeID&fields=photos&key=AIzaSyB0BVXaj3Ib7Hc4RHetfbAtuLsPOtzY-eQ"
+
                     var photoUrl: String = ""
+
                     val jsonObjectRequest = JsonObjectRequest(
                         Request.Method.GET, placeDetailsUrl, null,
                         { response ->
@@ -61,12 +57,23 @@ class RestaurantListActivity : BasicActivity() {
                                 val maxPhotoWidth = 400
                                 photoUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=$maxPhotoWidth&photoreference=$photoReference&key=AIzaSyB0BVXaj3Ib7Hc4RHetfbAtuLsPOtzY-eQ"
                                 val placeName = place.name
+                                val placePhone = place.phoneNumber
                                 ImageHandler.saveImageToInternalStorageFromUrl(this, photoUrl) { imagePath ->
                                     if (imagePath != null) {
-                                        val placeDesc = "Address: " + place.address + " url " + photoUrl
-                                        val newRes = Restaurant(placeName!!, db.getFreeRestaurantID(),
+                                        val placeDesc = "Address: " + place.address + " \nPhone Number " + placePhone
+                                        var newRes = Restaurant(placeName!!, db.getFreeRestaurantID(),
                                             imagePath, placeDesc)
-                                        db.addRestaurant(newRes)
+                                        val resList = db.getAllRestaurants()
+                                        var resExists: Boolean = false
+                                        for (restaurant in resList) {
+                                            if (restaurant.description == placeDesc && restaurant.name == placeName) {
+                                                resExists = true
+                                                newRes = restaurant
+                                            }
+                                        }
+                                        if (!resExists) {
+                                            db.addRestaurant(newRes)
+                                        }
                                         val intentToGo = Intent(this, RestaurantViewActivity::class.java)
                                         intentToGo.putExtra("RESTAURANT_ID", newRes.restaurantID)
                                         this.startActivity(intentToGo)
@@ -115,13 +122,12 @@ class RestaurantListActivity : BasicActivity() {
 
         autocompleteRes.setOnClickListener {
             val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.PHOTO_METADATAS, Place.Field.ICON_URL,Place.Field.ADDRESS,
-                Place.Field.OPENING_HOURS)
+                Place.Field.OPENING_HOURS, Place.Field.PHONE_NUMBER)
             val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
                 .build(this)
             startAutocomplete.launch(intent)
         }
-        db.populateDummyRestaurants()
-
+        //db.populateDummyRestaurants()
     }
     override fun onBackPressed() {
         this.finish()

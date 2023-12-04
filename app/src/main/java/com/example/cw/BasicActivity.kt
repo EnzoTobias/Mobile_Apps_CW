@@ -33,11 +33,15 @@ abstract class BasicActivity : AppCompatActivity() {
         getSupportActionBar()!!.setDisplayShowTitleEnabled(false)
 
 
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.topbar_menu, menu)
-        val accountItem = menu.findItem(R.id.action_account)
+        val reportItem = menu.findItem(R.id.action_report)
+        if (CurrentUser.currentUser == null || CurrentUser.currentUser!!.userID != 999) {
+            reportItem.isVisible = false
+        }
 
 
         return true
@@ -59,6 +63,12 @@ abstract class BasicActivity : AppCompatActivity() {
                     this.startActivity(intent)
                 }
                 true
+            }
+            R.id.action_report -> {
+                val intent = Intent(this, Account::class.java)
+                intent.putExtra("REPORT", true)
+                this.startActivity(intent)
+                return true
             }
 
             else -> super.onOptionsItemSelected(item)

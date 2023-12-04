@@ -1,5 +1,6 @@
 package com.example.cw
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -14,6 +15,7 @@ import android.widget.PopupMenu
 import androidx.core.content.ContextCompat.startActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import com.google.android.material.snackbar.Snackbar
 
 
 class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, var rating: Int, var user: User, var images: String) {
@@ -75,12 +77,26 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
                     if (currentUser != null && currentUser.userID == review.user.userID) {
                         popupMenu.menu.findItem(R.id.edit_review_option).isVisible = true
                     } else {
-                        popupMenu.menu.findItem(R.id.edit_review_option).isVisible = true
+                        popupMenu.menu.findItem(R.id.edit_review_option).isVisible = false
                     }
 
+                    if(currentUser != null) {
+                        popupMenu.menu.findItem(R.id.report_option).isVisible = true
+
+                    } else {
+                        popupMenu.menu.findItem(R.id.report_option).isVisible = false
+                    }
+
+                    val db = AppDatabase(context)
                     popupMenu.setOnMenuItemClickListener { item: MenuItem ->
                         when (item.itemId) {
                             R.id.report_option -> {
+                                if(CurrentUser.currentUser != null) {
+                                    val report = Report(db.getFreeReportID(), review, CurrentUser.currentUser!!)
+                                    db.addReport(report)
+                                    showSnackbar("Review Reported", context)
+                                }
+
                                 true
                             }
                             R.id.edit_review_option -> {
@@ -152,7 +168,14 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
 
         }
 
+        private fun showSnackbar(message: String, context: Context) {
+            Snackbar.make((context as Activity).findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
+        }
+
+
     }
+
+
 
 
 }

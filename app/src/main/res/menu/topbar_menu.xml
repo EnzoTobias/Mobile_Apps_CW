@@ -13,7 +13,13 @@
         android:icon="@drawable/account"
         android:title="Account"
         app:showAsAction="always" />
-s
+
+    <item
+        android:id="@+id/action_report"
+        android:icon="@drawable/report"
+        android:title="Report"
+        app:showAsAction="always" />
+
 
 
 

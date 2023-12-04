@@ -4,12 +4,13 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.content.Context
 import android.content.ContentValues
+import org.mindrot.jbcrypt.BCrypt
 import kotlin.random.Random
 
 
 class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
-        private const val DATABASE_VERSION = 25
+        private const val DATABASE_VERSION = 33
         private const val DATABASE_NAME = "AppDatabase.db"
         private const val TABLE_RESTAURANT = "restaurant"
         private const val TABLE_REVIEW = "review"
@@ -25,6 +26,8 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         private const val COLUMN_DESCRIPTION = "description"
         private const val COLUMN_PASSWORD = "password"
         private const val COLUMN_IMAGES = "images"
+        private const val TABLE_REPORT = "report"
+        private const val COLUMN_REPORT_ID = "reportID"
 
     }
 
@@ -46,14 +49,22 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
                 "FOREIGN KEY($COLUMN_USER_ID) REFERENCES $TABLE_USER($COLUMN_USER_ID))")
         db.execSQL(createReviewTableQuery)
 
-    }
+        val createReportTableQuery = ("CREATE TABLE $TABLE_REPORT " +
+                "($COLUMN_REPORT_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "$COLUMN_REVIEW_ID INTEGER, $COLUMN_USER_ID INTEGER, " +
+                "FOREIGN KEY($COLUMN_REVIEW_ID) REFERENCES $TABLE_REVIEW($COLUMN_REVIEW_ID), " +
+                "FOREIGN KEY($COLUMN_USER_ID) REFERENCES $TABLE_USER($COLUMN_USER_ID))")
+        db.execSQL(createReportTableQuery)
 
+
+    }
 
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS $TABLE_REVIEW")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_RESTAURANT")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_USER")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_REPORT")
         onCreate(db)
     }
 
@@ -94,6 +105,30 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         db.close()
         return insertedId != -1L
     }
+
+    fun addReport(report: Report): Boolean {
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(COLUMN_REVIEW_ID, report.review.reviewID)
+        contentValues.put(COLUMN_USER_ID, report.user.userID)
+        contentValues.put(COLUMN_REPORT_ID, report.reportID)
+
+        val insertedId = db.insert(TABLE_REPORT, null, contentValues)
+        db.close()
+        return insertedId != -1L
+    }
+
+    fun removeReport(reviewID: Int): Boolean {
+        val db = this.writableDatabase
+
+        val deletedRows = db.delete(TABLE_REPORT, "$COLUMN_REVIEW_ID = ?", arrayOf(reviewID.toString()))
+
+        db.close()
+
+        return deletedRows > 0
+    }
+
+
 
     fun getUserById(userID: Int): User {
         val db = this.readableDatabase
@@ -178,6 +213,54 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         db.close()
 
         return review
+    }
+
+    fun getReportById(reportID: Int): Report? {
+        val db = this.readableDatabase
+        var report: Report? = null
+
+        val query = "SELECT * FROM $TABLE_REPORT WHERE $COLUMN_REPORT_ID = ?"
+        val cursor = db.rawQuery(query, arrayOf(reportID.toString()))
+
+        if (cursor.moveToFirst()) {
+            val reviewID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_REVIEW_ID))
+            val userID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
+
+            val review = getReviewById(reviewID)
+            val user = getUserById(userID)
+
+            report = Report(reportID, review!!, user)
+        }
+
+        cursor.close()
+        db.close()
+
+        return report
+    }
+
+    fun getAllReports(): ArrayList<Report> {
+        val reportList = ArrayList<Report>()
+        val db = this.readableDatabase
+
+        val query = "SELECT * FROM $TABLE_REPORT"
+        val cursor = db.rawQuery(query, null)
+
+        while (cursor.moveToNext()) {
+            val reviewID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_REVIEW_ID))
+            val userID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
+            val reportID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_REPORT_ID))
+
+            val review = getReviewById(reviewID)
+            val user = getUserById(userID)
+
+            val report = Report(reportID, review!!, user)
+            reportList.add(report)
+        }
+
+        cursor.close()
+        db.close()
+
+        return reportList
     }
 
     fun deleteUserByID(userID: Int): Boolean {
@@ -398,6 +481,23 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         db.close()
 
         return freeReviewID
+    }
+
+    fun getFreeReportID(): Int {
+        val db = this.readableDatabase
+        var freeReportID = 1
+
+        val query = "SELECT MAX($COLUMN_REPORT_ID) AS maxReportID FROM $TABLE_REPORT"
+        val cursor = db.rawQuery(query, null)
+
+        if (cursor != null && cursor.moveToFirst()) {
+            freeReportID = cursor.getInt(cursor.getColumnIndexOrThrow("maxReportID")) + 1
+        }
+
+        cursor?.close()
+        db.close()
+
+        return freeReportID
     }
 
     fun checkUsernameTaken(username: String): Boolean {

@@ -55,6 +55,10 @@ class Login : AppCompatActivity() {
             val intent = Intent(this, CreateAccount::class.java)
             startActivity(intent)
         }
+        if(appDatabase.getUserById(999).userID != 999) {
+            val modUser = User("Moderator1", 999, "", BCrypt.hashpw("12345", BCrypt.gensalt()))
+            appDatabase.addUser(modUser)
+        }
 
     }
 
