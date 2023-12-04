@@ -59,7 +59,7 @@ class Login : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val intent = Intent(this, RestaurantViewActivity::class.java)
+        val intent = Intent(this, RestaurantListActivity::class.java)
         startActivity(intent)
     }
 

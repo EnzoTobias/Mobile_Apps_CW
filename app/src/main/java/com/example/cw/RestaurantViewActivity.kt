@@ -1,20 +1,37 @@
 package com.example.cw
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.SearchView
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 
 class RestaurantViewActivity : BasicActivity() {
     var receivedResID: Int = 0
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
+
         val restaurantImage: ImageView = findViewById(R.id.ImageRestaurant)
         val restaurantName: TextView = findViewById(R.id.restaurantName)
         val restaurantDesc: TextView = findViewById(R.id.restaurantDesc)
@@ -56,8 +73,13 @@ class RestaurantViewActivity : BasicActivity() {
 
 
 
+
     }
 
+    override fun onBackPressed() {
+        val intent = Intent(this, RestaurantListActivity::class.java)
+        startActivity(intent)
+    }
     override fun getLayoutID(): Int {
         return R.layout.activity_restaurant_view
     }

@@ -9,7 +9,7 @@ import kotlin.random.Random
 
 class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
-        private const val DATABASE_VERSION = 18
+        private const val DATABASE_VERSION = 25
         private const val DATABASE_NAME = "AppDatabase.db"
         private const val TABLE_RESTAURANT = "restaurant"
         private const val TABLE_REVIEW = "review"
@@ -45,6 +45,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
                 "FOREIGN KEY($COLUMN_RESTAURANT_ID) REFERENCES $TABLE_RESTAURANT($COLUMN_RESTAURANT_ID), " +
                 "FOREIGN KEY($COLUMN_USER_ID) REFERENCES $TABLE_USER($COLUMN_USER_ID))")
         db.execSQL(createReviewTableQuery)
+
     }
 
 

@@ -2,18 +2,27 @@ package com.example.cw
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.provider.MediaStore
 import android.util.Log
-import androidx.core.content.FileProvider
+import androidx.core.graphics.get
+import com.android.volley.Response
+import com.android.volley.VolleyError
+import com.android.volley.toolbox.ImageRequest
+import com.android.volley.toolbox.Volley
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
+import java.net.URL
 import java.text.SimpleDateFormat
-import java.util.*
-class ImageHandler {
+import java.util.Date
+import java.util.Locale
 
+
+class ImageHandler {
     companion object {
         const val REQUEST_IMAGE_PICK = 1001
 
@@ -52,11 +61,8 @@ class ImageHandler {
         private fun saveImageToInternalStorage(context: Context, uri: android.net.Uri): String? {
             val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
             val imageFileName = "JPEG_${timeStamp}_"
-            val storageDir: File? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val storageDir: File? =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-            } else {
-                Environment.getExternalStorageDirectory()
-            }
             val contentResolver = context.contentResolver
 
             try {
@@ -77,6 +83,47 @@ class ImageHandler {
                 Log.e("ImageHandler", "Error saving image: ${e.message}")
             }
             return null
+        }
+
+        fun saveImageToInternalStorageFromUrl(
+            context: Context,
+            imageUrl: String,
+            callback: (String?) -> Unit
+        ) {
+            val requestQueue = Volley.newRequestQueue(context)
+            val imageRequest = ImageRequest(
+                imageUrl,
+                { response ->
+                    val fileName = "image_${System.currentTimeMillis()}.jpg"
+                    val directory = File(context.filesDir, "images")
+
+                    if (!directory.exists()) {
+                        directory.mkdirs()
+                    }
+
+                    val file = File(directory, fileName)
+                    try {
+                        val fileOutputStream = FileOutputStream(file)
+                        response?.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
+                        fileOutputStream.flush()
+                        fileOutputStream.close()
+
+                        callback.invoke(file.absolutePath)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        callback.invoke(null)
+                    }
+                },
+                0,
+                0,
+                null,
+                null,
+                { error: VolleyError? ->
+                    error?.printStackTrace()
+                    callback.invoke(null)
+                })
+
+            requestQueue.add(imageRequest)
         }
     }
 }

@@ -46,16 +46,8 @@ abstract class BasicActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_home -> {
-                val intent = Intent(Intent.ACTION_PICK)
-                intent.type = "vnd.android.cursor.item/vnd.google.places"
-                // Or use specific query for a location picker
-                // intent.type = "text/plain"
-
-                if (intent.resolveActivity(packageManager) != null) {
-                    locationPicker.launch(intent)
-                } else {
-                    val intent = Intent(this, Login::class.java)
-                }
+                val intent = Intent(this, RestaurantListActivity::class.java)
+                startActivity(intent)
                 true
             }
             R.id.action_account -> {
@@ -82,4 +74,5 @@ abstract class BasicActivity : AppCompatActivity() {
     }
 
     abstract fun getLayoutID(): Int
+
 }
