@@ -11,10 +11,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class RestaurantListActivity : AppCompatActivity() {
+class RestaurantListActivity : BasicActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_restaurant_list)
 
         val db = AppDatabase(this)
         db.populateDummyRestaurants()
@@ -30,5 +29,12 @@ class RestaurantListActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.addItemDecoration(itemDecoration)
+    }
+    override fun onBackPressed() {
+        this.finish()
+    }
+
+    override fun getLayoutID(): Int {
+        return R.layout.activity_restaurant_list
     }
 }

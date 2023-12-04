@@ -33,7 +33,7 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
             }
         }
 
-        fun displayReviewsInLinearLayout(reviewsList: ArrayList<Review>, context: Context, linear: LinearLayout) {
+        fun displayReviewsInLinearLayout(reviewsList: ArrayList<Review>, context: Context, linear: LinearLayout, inUserPage: Boolean = false) {
             val inflater = LayoutInflater.from(context)
 
             for (review in reviewsList) {
@@ -50,9 +50,14 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
                 val s5 = reviewLayout.findViewById<ImageView>(R.id.starImage5)
                 val imagesLayout = reviewLayout.findViewById<LinearLayout>(R.id.imagesLinearReview)
                 val user = review.user
+                if (inUserPage) {
+                    userPfp.setImageBitmap(review.restaurant.getRestaurantImageFromPath(context, R.drawable.reyzel_lezyer_photo_of_a_duck_soup_photorealistic_ad89f309_f9b3_4717_abda_a89ba176c68b))
+                    userName.text = review.restaurant.name
+                } else {
+                    userPfp.setImageBitmap(user.getUserPfpFromPath(context, R.drawable.reyzel_lezyer_photo_of_a_duck_soup_photorealistic_ad89f309_f9b3_4717_abda_a89ba176c68b))
+                    userName.text = review.user.username
+                }
 
-                userPfp.setImageBitmap(user.getUserPfpFromPath(context, R.drawable.reyzel_lezyer_photo_of_a_duck_soup_photorealistic_ad89f309_f9b3_4717_abda_a89ba176c68b))
-                userName.text = review.user.username
                 reviewText.text = review.text
 
                 Review.displayStars(review.rating.toDouble(), s1, s2, s3, s4, s5)
@@ -82,6 +87,9 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
                                 val intent = Intent(context, CreateReviewActivity::class.java)
                                 intent.putExtra("REVIEW_ID", review.reviewID)
                                 intent.putExtra("CREATE_OR_EDIT", false)
+                                if (context is Account) {
+                                    intent.putExtra("FROM_USER", true)
+                                }
                                 startActivity(context, intent, null)
                                 true
                             }

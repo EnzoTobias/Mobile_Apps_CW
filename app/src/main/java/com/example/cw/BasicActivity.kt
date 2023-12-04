@@ -1,11 +1,14 @@
 package com.example.cw
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -15,70 +18,61 @@ import com.google.android.material.appbar.MaterialToolbar
 abstract class BasicActivity : AppCompatActivity() {
     protected lateinit var toolbar: MaterialToolbar
 
+    val locationPicker = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            val selectedLocation = data?.data
+            // Process the selected location here
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutID())
         toolbar = findViewById(R.id.generalToolbar)
         setSupportActionBar(toolbar)
+        getSupportActionBar()!!.setDisplayShowTitleEnabled(false)
+
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.topbar_menu, menu)
-        val searchItem = menu.findItem(R.id.action_search)
-        val searchView = searchItem.actionView as SearchView
-        searchItem.icon = ContextCompat.getDrawable(this, R.drawable.search)
+        val accountItem = menu.findItem(R.id.action_account)
 
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                performSearch(query)
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                // None
-                return true
-            }
-        })
         return true
     }
 
-    private fun performSearch(query: String?) {
-        // Implement your search logic here
-        // Use the query to perform the search operation
-        if (!query.isNullOrBlank()) {
-            // Perform search based on the query
-            // For example: display search results in a list or update UI
-        }
-    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_home -> {
-                showToast("Home clicked")
+                val intent = Intent(Intent.ACTION_PICK)
+                intent.type = "vnd.android.cursor.item/vnd.google.places"
+                // Or use specific query for a location picker
+                // intent.type = "text/plain"
+
+                if (intent.resolveActivity(packageManager) != null) {
+                    locationPicker.launch(intent)
+                } else {
+                    val intent = Intent(this, Login::class.java)
+                }
                 true
             }
             R.id.action_account -> {
-                showToast("Account clicked")
+                if (CurrentUser.currentUser == null) {
+                    val intent = Intent(this, Login::class.java)
+                    this.startActivity(intent)
+                } else {
+                    val intent = Intent(this, Account::class.java)
+                    this.startActivity(intent)
+                }
                 true
             }
 
-            R.id.action_filter -> {
-                // Handle filter action here
-                true
-            }
-            R.id.filter_option_1 -> {
-
-                true
-            }
-            R.id.filter_option_2 -> {
-                // Handle filter option 2 selection
-                true
-            }
             else -> super.onOptionsItemSelected(item)
         }
-        showToast("Account clicked")
     }
+
 
 
 

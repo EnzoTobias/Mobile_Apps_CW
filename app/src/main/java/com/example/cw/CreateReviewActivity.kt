@@ -27,7 +27,8 @@ class CreateReviewActivity : AppCompatActivity() {
     private lateinit var review: Review
     private lateinit var uploadImagesButton: Button
     private lateinit var imagesLinear: LinearLayout
-
+    private var fromUserPage: Boolean = false
+    var restaurant: Restaurant = Restaurant("",0,"", "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,19 +43,19 @@ class CreateReviewActivity : AppCompatActivity() {
         starImage5 = findViewById(R.id.starImage5)
         uploadImagesButton = findViewById(R.id.uploadImagesButton)
         imagesLinear = findViewById(R.id.imagesLinear)
-        val restaurant: Restaurant
         val user: User
 
         db = AppDatabase(this)
 
         val receivedIntent = intent
+        fromUserPage = receivedIntent.getBooleanExtra("FROM_USER", false)
         receiveCreateOrEdit = receivedIntent.getBooleanExtra("CREATE_OR_EDIT", true)
         if (receiveCreateOrEdit) {
             receivedResID = receivedIntent.getIntExtra("RESTAURANT_ID", 0)
             receivedUserID = receivedIntent.getIntExtra("USER_ID", 0)
             restaurant = db.getRestaurantById(receivedResID)
             user = db.getUserById(receivedUserID)
-            review = Review("", db.getFreeReviewID(), restaurant,5, user, "")
+            review = Review("", db.getFreeReviewID(), restaurant,5, CurrentUser.currentUser!!, "")
         } else {
             receivedRevID = receivedIntent.getIntExtra("REVIEW_ID", 0)
             review = db.getReviewById(receivedRevID)!!
@@ -111,19 +112,34 @@ class CreateReviewActivity : AppCompatActivity() {
                 showSnackbar("Review must be longer than 3 characters")
             }
             if (finish) {
-                val intent = Intent(this, RestaurantViewActivity::class.java)
-                intent.putExtra("RESTAURANT_ID", restaurant.restaurantID)
-                ContextCompat.startActivity(this, intent, null)
+                if (fromUserPage) {
+                    val intent = Intent(this, Account::class.java)
+                    ContextCompat.startActivity(this, intent, null)
+                } else {
+                    val intent = Intent(this, RestaurantViewActivity::class.java)
+                    intent.putExtra("RESTAURANT_ID", restaurant.restaurantID)
+                    ContextCompat.startActivity(this, intent, null)
+                }
+
             }
         }
     }
 
-
+    override fun onBackPressed() {
+        if (fromUserPage) {
+            val intent = Intent(this, Account::class.java)
+            ContextCompat.startActivity(this, intent, null)
+        } else {
+            val intent = Intent(this, RestaurantViewActivity::class.java)
+            intent.putExtra("RESTAURANT_ID", restaurant.restaurantID)
+            ContextCompat.startActivity(this, intent, null)
+        }
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ImageHandler.REQUEST_IMAGE_PICK && resultCode == RESULT_OK) {
             val imagePaths = ImageHandler.handleImagePickerResult(this@CreateReviewActivity, data)
-            review.images = imagePaths
+            review.images = review.images + ";" + imagePaths
         }
         Review.displayReviewImagesInLinearLayout(review.images, this, imagesLinear)
     }

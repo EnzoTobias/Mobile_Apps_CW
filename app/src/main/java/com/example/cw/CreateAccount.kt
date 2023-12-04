@@ -48,6 +48,9 @@ class CreateAccount : AppCompatActivity() {
 
             val isSuccess = appDatabase.addUser(newUser)
             if (isSuccess) {
+                val intent = Intent(this, Login::class.java)
+                intent.putExtra("CREATED", true)
+                startActivity(intent)
                 showSnackbar("Account created, please login")
             } else {
                 showSnackbar("Error occurred, please try again")
@@ -59,6 +62,11 @@ class CreateAccount : AppCompatActivity() {
             val intent = Intent(this, Login::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(this, RestaurantViewActivity::class.java)
+        startActivity(intent)
     }
 
     private fun showSnackbar(message: String) {

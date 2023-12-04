@@ -22,7 +22,11 @@ class Login : AppCompatActivity() {
         usernameInput = findViewById(R.id.usernameInput)
         passwordInput = findViewById(R.id.passwordInput)
         loginButton = findViewById(R.id.loginButton)
-
+        val receivedIntent = intent
+        val accountNotif = receivedIntent.getBooleanExtra("CREATED", false)
+        if (accountNotif) {
+            showSnackbar("Account created, please login")
+        }
         appDatabase = AppDatabase(this)
 
         loginButton.setOnClickListener {
@@ -39,6 +43,8 @@ class Login : AppCompatActivity() {
             if (BCrypt.checkpw(password, user.password)) {
                 currentUser = user
                 showSnackbar("Logged in as $username")
+                val intent = Intent(this, RestaurantListActivity::class.java)
+                startActivity(intent)
             } else {
                 showSnackbar("Wrong password")
             }
@@ -50,6 +56,11 @@ class Login : AppCompatActivity() {
             startActivity(intent)
         }
 
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(this, RestaurantViewActivity::class.java)
+        startActivity(intent)
     }
 
 

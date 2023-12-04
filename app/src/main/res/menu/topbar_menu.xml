@@ -13,29 +13,8 @@
         android:icon="@drawable/account"
         android:title="Account"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/action_filter"
-        android:icon="@drawable/filter"
-        android:title="Filter"
-        app:showAsAction="always">
-        <menu>
-            <item
-                android:id="@+id/filter_option_1"
-                android:title="Sort by review score" />
-            <item
-                android:id="@+id/filter_option_2"
-                android:title="Sort by amount of reviews" />
-            <item
-                android:id="@+id/filter_option_3"
-                android:title="Sort by restaurant name" />
-        </menu>
-    </item>
-    <item
-        android:id="@+id/action_search"
-        app:icon="@drawable/search"
-        android:title="Search"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="always" />
+s
+
 
 
 </menu>

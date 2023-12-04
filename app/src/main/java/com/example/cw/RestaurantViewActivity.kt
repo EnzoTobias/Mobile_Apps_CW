@@ -15,7 +15,6 @@ class RestaurantViewActivity : BasicActivity() {
     var receivedResID: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_restaurant_view)
         val restaurantImage: ImageView = findViewById(R.id.ImageRestaurant)
         val restaurantName: TextView = findViewById(R.id.restaurantName)
         val restaurantDesc: TextView = findViewById(R.id.restaurantDesc)
@@ -39,16 +38,19 @@ class RestaurantViewActivity : BasicActivity() {
         Review.displayStars(restaurantScore, starImage1, starImage2, starImage3, starImage4, starImage5)
         Review.displayReviewsInLinearLayout(db.reviewsByRestaurant(receivedResID),this, mainLinear)
 
-        if (CurrentUser.currentUser == null) {
-            //reviewButton.isVisible = false
-        }
+
 
         reviewButton.setOnClickListener() {
-            val intent = Intent(this, CreateReviewActivity::class.java)
-            intent.putExtra("RESTAURANT_ID", restaurant.restaurantID)
-            intent.putExtra("USER_ID", 0)
-            intent.putExtra("CREATE_OR_EDIT", true)
-            ContextCompat.startActivity(this, intent, null)
+            if (CurrentUser.currentUser == null) {
+                val intent = Intent(this, Login::class.java)
+                ContextCompat.startActivity(this, intent, null)
+            } else {
+                val intent = Intent(this, CreateReviewActivity::class.java)
+                intent.putExtra("RESTAURANT_ID", restaurant.restaurantID)
+                intent.putExtra("USER_ID", 0)
+                intent.putExtra("CREATE_OR_EDIT", true)
+                ContextCompat.startActivity(this, intent, null)
+            }
 
         }
 
