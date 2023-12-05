@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" android:name="user_options_menu">
+    <item
+        android:id="@+id/change_pfp_option"
+        android:title="Change Picture" />
+
+</menu>

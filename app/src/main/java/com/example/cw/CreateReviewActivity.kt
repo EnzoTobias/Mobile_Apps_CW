@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 
@@ -43,6 +44,7 @@ class CreateReviewActivity : AppCompatActivity() {
         starImage5 = findViewById(R.id.starImage5)
         uploadImagesButton = findViewById(R.id.uploadImagesButton)
         imagesLinear = findViewById(R.id.imagesLinear)
+        val actionName = findViewById<TextView>(R.id.textView15)
         val user: User
 
         db = AppDatabase(this)
@@ -64,6 +66,7 @@ class CreateReviewActivity : AppCompatActivity() {
             reviewInput.setText(review?.text ?: "")
             Review.displayStars(review.rating.toDouble(), starImage1, starImage2, starImage3, starImage4, starImage5)
             Review.displayReviewImagesInLinearLayout(review.images, this, imagesLinear)
+            actionName.text = getString(R.string.editReview)
         }
 
 

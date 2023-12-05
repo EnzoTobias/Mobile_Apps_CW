@@ -27,10 +27,10 @@ class ImageHandler {
         const val REQUEST_IMAGE_PICK = 1001
 
 
-        fun pickImagesFromGallery(activity: Activity) {
+        fun pickImagesFromGallery(activity: Activity, multiple: Boolean = true) {
             val pickIntent = Intent(Intent.ACTION_GET_CONTENT)
             pickIntent.type = "image/*"
-            pickIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            pickIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, multiple)
             activity.startActivityForResult(
                 Intent.createChooser(pickIntent, "Select Picture"),
                 REQUEST_IMAGE_PICK

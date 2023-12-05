@@ -538,5 +538,22 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         return false
     }
 
+    fun updateUser(user: User): Boolean {
+        val db = this.writableDatabase
+
+        val existingUser = getUserById(user.userID)
+
+        if (existingUser != null) {
+            val deleted = deleteUserByID(user.userID)
+
+            if (deleted) {
+                return addUser(user)
+            }
+        }
+
+        db.close()
+        return false
+    }
+
 
 }
