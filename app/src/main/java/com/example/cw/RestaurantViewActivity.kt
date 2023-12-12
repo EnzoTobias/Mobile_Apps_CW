@@ -20,6 +20,7 @@ import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.firebase.auth.FirebaseAuth
 
 class RestaurantViewActivity : BasicActivity() {
     var receivedResID: Int = 0
@@ -58,13 +59,15 @@ class RestaurantViewActivity : BasicActivity() {
 
 
         reviewButton.setOnClickListener() {
-            if (CurrentUser.currentUser == null) {
+            val mAuth = FirebaseAuth.getInstance()
+            val currentUserFire = mAuth.currentUser
+            if (currentUserFire == null) {
                 val intent = Intent(this, Login::class.java)
                 ContextCompat.startActivity(this, intent, null)
             } else {
                 val intent = Intent(this, CreateReviewActivity::class.java)
                 intent.putExtra("RESTAURANT_ID", restaurant.restaurantID)
-                intent.putExtra("USER_ID", 0)
+                intent.putExtra("USER_ID", "")
                 intent.putExtra("CREATE_OR_EDIT", true)
                 ContextCompat.startActivity(this, intent, null)
             }

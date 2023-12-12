@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "545023694094",
+    "project_id": "cwapp-4aab1",
+    "storage_bucket": "cwapp-4aab1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:545023694094:android:aff65eda0af8d617e2335f",
+        "android_client_info": {
+          "package_name": "com.example.cw"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2Y5CmYjtC7CAmohkL_cDtA4mAzjMexW8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -16,10 +16,12 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 
 
 class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, var rating: Int, var user: User, var images: String) {
     companion object {
+        lateinit var db: AppDatabase
         fun displayStars(score: Double, vararg stars: ImageView) {
             val roundedScore = score.toInt()
 
@@ -60,6 +62,9 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
                     userName.text = review.user.username
                 }
 
+                db = AppDatabase(context)
+
+
                 reviewText.text = review.text
 
                 Review.displayStars(review.rating.toDouble(), s1, s2, s3, s4, s5)
@@ -73,26 +78,32 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
 
                     popupMenu.menuInflater.inflate(R.menu.review_options_menu, popupMenu.menu)
 
-                    val currentUser = CurrentUser.currentUser
-                    if (currentUser != null && currentUser.userID == review.user.userID) {
-                        popupMenu.menu.findItem(R.id.edit_review_option).isVisible = true
+                    val mAuth = FirebaseAuth.getInstance()
+                    val currentUserFire = mAuth.currentUser
+                    if (currentUserFire != null) {
+                        val currentUser = db.getUserById(currentUserFire.uid)
+                        if (currentUser.userID == review.user.userID) {
+                            popupMenu.menu.findItem(R.id.edit_review_option).isVisible = true
+                        } else {
+                            popupMenu.menu.findItem(R.id.edit_review_option).isVisible = false
+                        }
                     } else {
                         popupMenu.menu.findItem(R.id.edit_review_option).isVisible = false
                     }
 
-                    if(currentUser != null) {
+                    if(currentUserFire != null) {
                         popupMenu.menu.findItem(R.id.report_option).isVisible = true
 
                     } else {
                         popupMenu.menu.findItem(R.id.report_option).isVisible = false
                     }
 
-                    val db = AppDatabase(context)
                     popupMenu.setOnMenuItemClickListener { item: MenuItem ->
                         when (item.itemId) {
                             R.id.report_option -> {
-                                if(CurrentUser.currentUser != null) {
-                                    val report = Report(db.getFreeReportID(), review, CurrentUser.currentUser!!)
+                                if(currentUserFire != null) {
+                                    val currentUser = db.getUserById(currentUserFire.uid)
+                                    val report = Report(db.getFreeReportID(), review, currentUser)
                                     db.addReport(report)
                                     showSnackbar("Review Reported", context)
                                 }

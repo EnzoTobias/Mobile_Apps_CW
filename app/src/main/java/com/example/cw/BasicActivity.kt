@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.firebase.auth.FirebaseAuth
 
 
 abstract class BasicActivity : AppCompatActivity() {
@@ -39,7 +40,16 @@ abstract class BasicActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.topbar_menu, menu)
         val reportItem = menu.findItem(R.id.action_report)
-        if (CurrentUser.currentUser == null || CurrentUser.currentUser!!.userID != 999) {
+        val mAuth = FirebaseAuth.getInstance()
+        val currentUserFire = mAuth.currentUser
+        val db = AppDatabase(this)
+        if (currentUserFire != null) {
+            val currentUser = db.getUserById(currentUserFire.uid)
+            if (currentUser.userID != "99") {
+                reportItem.isVisible = false
+            }
+
+        } else {
             reportItem.isVisible = false
         }
 
@@ -48,6 +58,8 @@ abstract class BasicActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val mAuth = FirebaseAuth.getInstance()
+        val currentUser = mAuth.currentUser
         return when (item.itemId) {
             R.id.action_home -> {
                 val intent = Intent(this, RestaurantListActivity::class.java)
@@ -55,7 +67,7 @@ abstract class BasicActivity : AppCompatActivity() {
                 true
             }
             R.id.action_account -> {
-                if (CurrentUser.currentUser == null) {
+                if (currentUser == null) {
                     val intent = Intent(this, Login::class.java)
                     this.startActivity(intent)
                 } else {

@@ -10,7 +10,7 @@ import kotlin.random.Random
 
 class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
-        private const val DATABASE_VERSION = 33
+        private const val DATABASE_VERSION = 43
         private const val DATABASE_NAME = "AppDatabase.db"
         private const val TABLE_RESTAURANT = "restaurant"
         private const val TABLE_REVIEW = "review"
@@ -38,20 +38,20 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         db.execSQL(createRestaurantTableQuery)
 
         val createUserTableQuery = ("CREATE TABLE $TABLE_USER " +
-                "($COLUMN_USER_ID INTEGER PRIMARY KEY, $COLUMN_USERNAME TEXT, $COLUMN_IMAGE_PATH TEXT, " +
+                "($COLUMN_USER_ID TEXT PRIMARY KEY, $COLUMN_USERNAME TEXT, $COLUMN_IMAGE_PATH TEXT, " +
                 "$COLUMN_PASSWORD TEXT)")
         db.execSQL(createUserTableQuery)
 
         val createReviewTableQuery = ("CREATE TABLE $TABLE_REVIEW " +
                 "($COLUMN_REVIEW_ID INTEGER PRIMARY KEY, $COLUMN_RESTAURANT_ID INTEGER, " +
-                "$COLUMN_TEXT TEXT, $COLUMN_RATING INTEGER, $COLUMN_USER_ID INTEGER, $COLUMN_IMAGES TEXT, " +
+                "$COLUMN_TEXT TEXT, $COLUMN_RATING INTEGER, $COLUMN_USER_ID TEXT, $COLUMN_IMAGES TEXT, " +
                 "FOREIGN KEY($COLUMN_RESTAURANT_ID) REFERENCES $TABLE_RESTAURANT($COLUMN_RESTAURANT_ID), " +
                 "FOREIGN KEY($COLUMN_USER_ID) REFERENCES $TABLE_USER($COLUMN_USER_ID))")
         db.execSQL(createReviewTableQuery)
 
         val createReportTableQuery = ("CREATE TABLE $TABLE_REPORT " +
                 "($COLUMN_REPORT_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "$COLUMN_REVIEW_ID INTEGER, $COLUMN_USER_ID INTEGER, " +
+                "$COLUMN_REVIEW_ID INTEGER, $COLUMN_USER_ID TEXT, " +
                 "FOREIGN KEY($COLUMN_REVIEW_ID) REFERENCES $TABLE_REVIEW($COLUMN_REVIEW_ID), " +
                 "FOREIGN KEY($COLUMN_USER_ID) REFERENCES $TABLE_USER($COLUMN_USER_ID))")
         db.execSQL(createReportTableQuery)
@@ -130,13 +130,13 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
 
 
 
-    fun getUserById(userID: Int): User {
+    fun getUserById(userID: String): User {
         val db = this.readableDatabase
 
         val query = "SELECT * FROM $TABLE_USER WHERE $COLUMN_USER_ID = ?"
-        val cursor = db.rawQuery(query, arrayOf(userID.toString()))
+        val cursor = db.rawQuery(query, arrayOf(userID))
 
-        var user = User("", 0, "", "")
+        var user = User("", "", "", "")
         if (cursor.moveToFirst()) {
             val username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME))
             val imgPath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE_PATH))
@@ -159,9 +159,9 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         val query = "SELECT * FROM $TABLE_USER WHERE $COLUMN_USERNAME = ?"
         val cursor = db.rawQuery(query, arrayOf(userName))
 
-        var user = User("", 0, "", "")
+        var user = User("", "", "", "")
         if (cursor.moveToFirst()) {
-            val userID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
+            val userID = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
             val imgPath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE_PATH))
             val password = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD))
             user = User(userName, userID, imgPath, password)
@@ -202,7 +202,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
             val text = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TEXT))
             val rating = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RATING))
             val restaurantID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RESTAURANT_ID))
-            val userID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
+            val userID = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
             val images = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGES))
             val restaurant = getRestaurantById(restaurantID)
             val user = getUserById(userID)
@@ -224,7 +224,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
 
         if (cursor.moveToFirst()) {
             val reviewID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_REVIEW_ID))
-            val userID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
+            val userID = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
 
             val review = getReviewById(reviewID)
             val user = getUserById(userID)
@@ -247,7 +247,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
 
         while (cursor.moveToNext()) {
             val reviewID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_REVIEW_ID))
-            val userID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
+            val userID = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
             val reportID = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_REPORT_ID))
 
             val review = getReviewById(reviewID)
@@ -263,9 +263,9 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         return reportList
     }
 
-    fun deleteUserByID(userID: Int): Boolean {
+    fun deleteUserByID(userID: String): Boolean {
         val db = this.writableDatabase
-        val deletedRows = db.delete(TABLE_USER, "$COLUMN_USER_ID = ?", arrayOf(userID.toString()))
+        val deletedRows = db.delete(TABLE_USER, "$COLUMN_USER_ID = ?", arrayOf(userID))
         db.close()
         return deletedRows > 0
     }
@@ -288,7 +288,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
             val text = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TEXT))
             val rating = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RATING))
             val restaurant = getRestaurantById(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RESTAURANT_ID)))
-            val user = getUserById(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID)))
+            val user = getUserById(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_ID)))
             val images = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGES))
             val review = Review(text, reviewID, restaurant, rating, user, images)
             reviewsForRestaurant.add(review)
@@ -300,7 +300,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         return reviewsForRestaurant
     }
 
-    fun reviewsByUser(userID: Int): ArrayList<Review> {
+    fun reviewsByUser(userID: String): ArrayList<Review> {
         val reviewsByUser = ArrayList<Review>()
         val db = this.readableDatabase
 
@@ -365,7 +365,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
                 Restaurant("Restaurant E", 15, "","f00d"),
                 Restaurant("ZERO", 0, "","0000")
             )
-            val dummyUser = User("troll",0,"", "")
+            val dummyUser = User("troll","","", "")
             for (restaurant in dummyRestaurants) {
                 val contentValues = ContentValues()
                 contentValues.put(COLUMN_RESTAURANT_ID, restaurant.restaurantID)
@@ -432,22 +432,6 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         return totalRating / reviews.size
     }
 
-    fun getFreeUserID(): Int {
-        val db = this.readableDatabase
-        var freeUserID = 1
-
-        val query = "SELECT MAX($COLUMN_USER_ID) AS maxUserID FROM $TABLE_USER"
-        val cursor = db.rawQuery(query, null)
-
-        if (cursor != null && cursor.moveToFirst()) {
-            freeUserID = cursor.getInt(cursor.getColumnIndexOrThrow("maxUserID")) + 1
-        }
-
-        cursor?.close()
-        db.close()
-
-        return freeUserID
-    }
 
     fun getFreeRestaurantID(): Int {
         val db = this.readableDatabase

@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import com.example.cw.CurrentUser.currentUser
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import org.mindrot.jbcrypt.BCrypt
 
 class Login : AppCompatActivity() {
@@ -33,21 +33,19 @@ class Login : AppCompatActivity() {
             val username = usernameInput.text.toString().trim()
             val password = passwordInput.text.toString().trim()
 
-            val user = appDatabase.getUserByName(username)
 
-            if (user.password.isEmpty()) {
-                showSnackbar("Username not found")
-                return@setOnClickListener
+            val mAuth = FirebaseAuth.getInstance()
+            mAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this) {
+                task ->
+                if (task.isSuccessful) {
+                    showSnackbar("Logged in as $username")
+                    val intent = Intent(this, RestaurantListActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    showSnackbar("Username or Password are incorrect")
+                }
             }
 
-            if (BCrypt.checkpw(password, user.password)) {
-                currentUser = user
-                showSnackbar("Logged in as $username")
-                val intent = Intent(this, RestaurantListActivity::class.java)
-                startActivity(intent)
-            } else {
-                showSnackbar("Wrong password")
-            }
         }
 
         val createAccountButton: Button = findViewById(R.id.createAccountButton)
@@ -55,10 +53,7 @@ class Login : AppCompatActivity() {
             val intent = Intent(this, CreateAccount::class.java)
             startActivity(intent)
         }
-        if(appDatabase.getUserById(999).userID != 999) {
-            val modUser = User("Moderator1", 999, "", BCrypt.hashpw("12345", BCrypt.gensalt()))
-            appDatabase.addUser(modUser)
-        }
+
 
     }
 

@@ -8,12 +8,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import com.google.firebase.auth.FirebaseAuth
 
 class Account : BasicActivity() {
-    val user = CurrentUser.currentUser!!
-    val db = AppDatabase(this)
+
     lateinit var userImage: ImageView
+    lateinit var user: User
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val receivedIntent = intent
@@ -21,6 +23,11 @@ class Account : BasicActivity() {
         val reviewsLayout = findViewById<LinearLayout>(R.id.userReviewsLayout)
         val usernameText = findViewById<TextView>(R.id.usernameText)
         val userOptions = findViewById<ImageView>(R.id.userOptions)
+
+        val fireUser = FirebaseAuth.getInstance().currentUser!!
+        val db = AppDatabase(this)
+        user = db.getUserById(fireUser.uid)
+
         userImage = findViewById<ImageView>(R.id.usernameImage)
         val reviewList = db.reviewsByUser(user.userID)
 
@@ -48,6 +55,13 @@ class Account : BasicActivity() {
                         true
                     }
 
+                    R.id.logout_option -> {
+                        FirebaseAuthManager.logoutAttempt(this)
+                        val intent = Intent(this, RestaurantListActivity::class.java)
+                        ContextCompat.startActivity(this, intent, null)
+                        true
+                    }
+
                     else -> false
                 }
             }
@@ -59,11 +73,11 @@ class Account : BasicActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        val db = AppDatabase(this)
         if (requestCode == ImageHandler.REQUEST_IMAGE_PICK && resultCode == RESULT_OK) {
             val imagePaths = ImageHandler.handleImagePickerResult(this@Account, data)
             user.imagePath = imagePaths
             db.updateUser(user)
-            CurrentUser.currentUser = user
             userImage.setImageBitmap(user.getUserPfpFromPath(this, R.drawable.reyzel_lezyer_photo_of_a_burger_photorealistic_23f4b9f9_7c15_447b_b58c_41631ebe89c2))
         }
     }

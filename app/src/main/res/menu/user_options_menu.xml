@@ -3,5 +3,9 @@
     <item
         android:id="@+id/change_pfp_option"
         android:title="Change Picture" />
+    <item
+        android:id="@+id/logout_option"
+        android:title="Logout" />
+
 
 </menu>

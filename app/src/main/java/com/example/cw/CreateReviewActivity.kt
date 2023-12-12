@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 
 class CreateReviewActivity : AppCompatActivity() {
 
@@ -21,7 +22,7 @@ class CreateReviewActivity : AppCompatActivity() {
     private lateinit var starImage4: ImageView
     private lateinit var starImage5: ImageView
     private var receivedResID: Int = 0
-    private var receivedUserID: Int = 0
+    private var receivedUserID: String = ""
     private var receiveCreateOrEdit: Boolean = true
     private var receivedRevID: Int = 0
     private lateinit var db: AppDatabase
@@ -54,10 +55,12 @@ class CreateReviewActivity : AppCompatActivity() {
         receiveCreateOrEdit = receivedIntent.getBooleanExtra("CREATE_OR_EDIT", true)
         if (receiveCreateOrEdit) {
             receivedResID = receivedIntent.getIntExtra("RESTAURANT_ID", 0)
-            receivedUserID = receivedIntent.getIntExtra("USER_ID", 0)
+            receivedUserID = receivedIntent.getStringExtra("USER_ID")!!
             restaurant = db.getRestaurantById(receivedResID)
             user = db.getUserById(receivedUserID)
-            review = Review("", db.getFreeReviewID(), restaurant,5, CurrentUser.currentUser!!, "")
+            val mAuth = FirebaseAuth.getInstance()
+            val currentUser = db.getUserById(mAuth.currentUser!!.uid)
+            review = Review("", db.getFreeReviewID(), restaurant,5, currentUser, "")
         } else {
             receivedRevID = receivedIntent.getIntExtra("REVIEW_ID", 0)
             review = db.getReviewById(receivedRevID)!!

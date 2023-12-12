@@ -7,12 +7,14 @@ import android.widget.Button
 import android.widget.EditText
 import com.google.android.material.snackbar.Snackbar
 import org.mindrot.jbcrypt.BCrypt
+import com.google.firebase.auth.FirebaseAuth
 
 class CreateAccount : AppCompatActivity() {
     private lateinit var usernameInput: EditText
     private lateinit var passwordInput: EditText
     private lateinit var createButton: Button
     private lateinit var appDatabase: AppDatabase
+    private var mAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +35,7 @@ class CreateAccount : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (password.length < 5) {
+            if (password.length < 6) {
                 showSnackbar("Password too short")
                 return@setOnClickListener
             }
@@ -42,26 +44,40 @@ class CreateAccount : AppCompatActivity() {
                 showSnackbar("Username taken")
                 return@setOnClickListener
             }
-            val hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt())
-            val freeUserID = appDatabase.getFreeUserID()
-            val newUser = User(username, freeUserID, "", hashedPassword)
 
-            val isSuccess = appDatabase.addUser(newUser)
-            if (isSuccess) {
-                val intent = Intent(this, Login::class.java)
-                intent.putExtra("CREATED", true)
-                startActivity(intent)
-                showSnackbar("Account created, please login")
-            } else {
-                showSnackbar("Error occurred, please try again")
+            mAuth.createUserWithEmailAndPassword(username, password).addOnCompleteListener(this) {
+                    task ->
+                if (task.isSuccessful) {
+                    mAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this) {
+                            task ->
+                        if (task.isSuccessful) {
+                            val userID = mAuth.currentUser!!.uid
+                            val newUser = User(username, userID, "", "")
+                            appDatabase.addUser(newUser)
+                            mAuth.signOut()
+                            val intent = Intent(this, Login::class.java)
+                            intent.putExtra("CREATED", true)
+                            startActivity(intent)
+                            showSnackbar("Account created, please login")
+
+                        } else {
+                            showSnackbar("Invalid email or email already in use")
+                        }
+                    }
+                } else {
+                    showSnackbar("Invalid email or email already in use")
+                }
+
             }
-        }
 
+            }
         val createAccountButton: Button = findViewById(R.id.loginButton2)
         createAccountButton.setOnClickListener {
             val intent = Intent(this, Login::class.java)
             startActivity(intent)
         }
+
+
     }
 
     override fun onBackPressed() {
