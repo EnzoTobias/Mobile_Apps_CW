@@ -39,7 +39,7 @@ abstract class BasicActivity : AppCompatActivity() {
         val db = AppDatabase(this)
         if (currentUserFire != null) {
             val currentUser = db.getUserById(currentUserFire.uid)
-            if (currentUser.userID != "q9j5x2XT3jW3GmkeA8jWq9gmM172") {
+            if (currentUser.userID != "q9j5x2XT3jW3GmkeA8jWq9gmM172" && currentUser.userID != "mdW5Dn24YPW31l0TzqFWZ8HuF0I3") {
                 reportItem.isVisible = false
             }
 

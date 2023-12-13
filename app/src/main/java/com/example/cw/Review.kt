@@ -79,6 +79,7 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
                         review.text = "BLOCKED USER REVIEW"
                         user.username = "BLOCKED USER"
                         user.imagePath = ""
+                        review.images = ""
                     }
                 } else {
                     moreOptions.isVisible = false
