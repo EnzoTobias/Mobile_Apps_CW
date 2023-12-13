@@ -25,7 +25,7 @@ class Login : AppCompatActivity() {
         val receivedIntent = intent
         val accountNotif = receivedIntent.getBooleanExtra("CREATED", false)
         if (accountNotif) {
-            showSnackbar("Account created, please login")
+            showSnackbar(getString(R.string.account_created))
         }
         appDatabase = AppDatabase(this)
 
@@ -38,11 +38,10 @@ class Login : AppCompatActivity() {
             mAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this) {
                 task ->
                 if (task.isSuccessful) {
-                    showSnackbar("Logged in as $username")
                     val intent = Intent(this, RestaurantListActivity::class.java)
                     startActivity(intent)
                 } else {
-                    showSnackbar("Username or Password are incorrect")
+                    showSnackbar(getString(R.string.username_or_password_incorrect))
                 }
             }
 

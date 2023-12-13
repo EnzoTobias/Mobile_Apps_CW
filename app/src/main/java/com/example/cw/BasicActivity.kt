@@ -19,13 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 abstract class BasicActivity : AppCompatActivity() {
     protected lateinit var toolbar: MaterialToolbar
 
-    val locationPicker = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data: Intent? = result.data
-            val selectedLocation = data?.data
-            // Process the selected location here
-        }
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutID())
@@ -45,7 +39,7 @@ abstract class BasicActivity : AppCompatActivity() {
         val db = AppDatabase(this)
         if (currentUserFire != null) {
             val currentUser = db.getUserById(currentUserFire.uid)
-            if (currentUser.userID != "99") {
+            if (currentUser.userID != "q9j5x2XT3jW3GmkeA8jWq9gmM172") {
                 reportItem.isVisible = false
             }
 

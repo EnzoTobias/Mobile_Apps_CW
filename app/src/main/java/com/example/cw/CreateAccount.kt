@@ -31,17 +31,17 @@ class CreateAccount : AppCompatActivity() {
             val password = passwordInput.text.toString().trim()
 
             if (username.length < 2) {
-                showSnackbar("Username too short")
+                showSnackbar(getString(R.string.emailShort))
                 return@setOnClickListener
             }
 
             if (password.length < 6) {
-                showSnackbar("Password too short")
+                showSnackbar(getString(R.string.passwordShort))
                 return@setOnClickListener
             }
 
             if (appDatabase.checkUsernameTaken(username)) {
-                showSnackbar("Username taken")
+                showSnackbar(getString(R.string.emailUsed))
                 return@setOnClickListener
             }
 
@@ -52,20 +52,20 @@ class CreateAccount : AppCompatActivity() {
                             task ->
                         if (task.isSuccessful) {
                             val userID = mAuth.currentUser!!.uid
-                            val newUser = User(username, userID, "", "")
+                            val newUser = User(username, userID, "")
                             appDatabase.addUser(newUser)
                             mAuth.signOut()
                             val intent = Intent(this, Login::class.java)
                             intent.putExtra("CREATED", true)
                             startActivity(intent)
-                            showSnackbar("Account created, please login")
+                            showSnackbar(getString(R.string.accountCreated))
 
                         } else {
-                            showSnackbar("Invalid email or email already in use")
+                            showSnackbar(getString(R.string.invalid_email_or_in_use))
                         }
                     }
                 } else {
-                    showSnackbar("Invalid email or email already in use")
+                    showSnackbar(getString(R.string.invalid_email_or_in_use))
                 }
 
             }

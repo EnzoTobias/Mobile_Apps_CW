@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -27,6 +28,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -84,7 +86,7 @@ class RestaurantListActivity : BasicActivity() {
                             }
                         },
                         { error ->
-                            // Handle error
+                            // error handling not necessary
                         })
                     val queue = Volley.newRequestQueue(this)
                     queue.add(jsonObjectRequest)
@@ -92,7 +94,6 @@ class RestaurantListActivity : BasicActivity() {
 
                 }
             } else if (result.resultCode == Activity.RESULT_CANCELED) {
-                // The user canceled the operation.
                 Log.i(TAG, "User canceled autocomplete")
             }
         }
@@ -115,17 +116,25 @@ class RestaurantListActivity : BasicActivity() {
         val restaurantList = db.getAllRestaurants()
         val autocompleteRes = findViewById<Button>(R.id.newResButton)
 
+
         val adapter = RestaurantAdapter(restaurantList)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.addItemDecoration(itemDecoration)
 
         autocompleteRes.setOnClickListener {
-            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.PHOTO_METADATAS, Place.Field.ICON_URL,Place.Field.ADDRESS,
-                Place.Field.OPENING_HOURS, Place.Field.PHONE_NUMBER)
-            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-                .build(this)
-            startAutocomplete.launch(intent)
+            val mAuth = FirebaseAuth.getInstance()
+            val currentUser = mAuth.currentUser
+            if (currentUser == null) {
+                val intent = Intent(this, Login::class.java)
+                ContextCompat.startActivity(this, intent, null)
+            } else {
+                val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.PHOTO_METADATAS, Place.Field.ICON_URL,Place.Field.ADDRESS,
+                    Place.Field.OPENING_HOURS, Place.Field.PHONE_NUMBER)
+                val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                    .build(this)
+                startAutocomplete.launch(intent)
+            }
         }
         //db.populateDummyRestaurants()
     }

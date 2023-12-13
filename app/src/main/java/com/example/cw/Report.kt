@@ -36,11 +36,11 @@ class Report(val reportID: Int, val review: Review, val user: User) {
                 val user = report.review.user
                 val reportingUser = report.user
 
-                userPfp.setImageBitmap(user.getUserPfpFromPath(context, R.drawable.reyzel_lezyer_photo_of_a_duck_soup_photorealistic_ad89f309_f9b3_4717_abda_a89ba176c68b))
+                userPfp.setImageBitmap(user.getUserPfpFromPath(context, R.drawable.account_empty))
                 userName.text = report.review.user.username
 
-                reportPfp.setImageBitmap(reportingUser.getUserPfpFromPath(context, R.drawable.reyzel_lezyer_photo_of_a_duck_soup_photorealistic_ad89f309_f9b3_4717_abda_a89ba176c68b))
-                reportText.text = "Reported by: " + report.user.username
+                reportPfp.setImageBitmap(reportingUser.getUserPfpFromPath(context, R.drawable.account_empty))
+                reportText.text = context.getString(R.string.reported_by, report.user.username)
 
 
 
@@ -59,8 +59,8 @@ class Report(val reportID: Int, val review: Review, val user: User) {
                     popupMenu.menuInflater.inflate(R.menu.review_options_menu, popupMenu.menu)
 
 
-                    popupMenu.menu.findItem(R.id.edit_review_option).title = "Delete Review"
-                    popupMenu.menu.findItem(R.id.report_option).title = "Ignore Report"
+                    popupMenu.menu.findItem(R.id.edit_review_option).title = context.getString(R.string.delete_review_option)
+                    popupMenu.menu.findItem(R.id.report_option).title = context.getString(R.string.ignore_report_option)
 
 
                     val db = AppDatabase(context)
@@ -68,14 +68,14 @@ class Report(val reportID: Int, val review: Review, val user: User) {
                         when (item.itemId) {
                             R.id.report_option -> {
                                 db.removeReport(report.review.reviewID)
-                                showSnackbar("Report Ignored", context)
+                                showSnackbar(context.getString(R.string.report_ignored), context)
                                 Report.displayReviewsInLinearLayout(db.getAllReports(), context, linear)
                                 true
                             }
                             R.id.edit_review_option -> {
                                 db.deleteReviewByID(report.review.reviewID)
                                 db.removeReport(report.review.reviewID)
-                                showSnackbar("Review Deleted", context)
+                                showSnackbar(context.getString(R.string.review_deleted), context)
                                 Report.displayReviewsInLinearLayout(db.getAllReports(), context, linear)
                                 true
 

@@ -7,11 +7,11 @@
     <string name="nearest">Nearest</string>
     <string name="highrate">Highest Rated</string>
     <string name="writereview">Write Review</string>
-    <string name="username">Username</string>
+    <string name="username">Email</string>
     <string name="images">Images</string>
     <string name="seallreviews">See all reviews></string>
     <string name="reviews">Reviews:</string>
-    <string name="enterUsername">Enter Username</string>
+    <string name="enterUsername">Enter Email</string>
     <string name="enterPassword">Enter Password</string>
     <string name="createAccount">Create an Account</string>s
     <string name="createAccountButton">Create Account</string>
@@ -23,7 +23,26 @@
     <string name="uploadImages">Upload Images</string>
     <string name="close">Close</string>
     <string name="delete">Delete</string>
+    <string name="emailShort">Email too short</string>
+    <string name="passwordShort">Password too short</string>
+    <string name="emailUsed">Email already in use</string>
+    <string name="accountCreated">Account created, please login</string>
     <string name="newrestaurant">Review New Restaurant</string>
+    <string name="unblock_option">Unblock</string>
+    <string name="invalid_email_or_in_use">Invalid email or email already in use</string>
+    <string name="review_submitted">Review submitted</string>
+    <string name="failed_submit_review">Failed to submit review</string>
+    <string name="review_updated">Review updated</string>
+    <string name="failed_update_review">Failed to update review</string>
+    <string name="review_length_error">Review must be longer than 3 characters</string>
+    <string name="select_picture">Select Picture</string>
+    <string name="account_created">Account created, please login</string>
+    <string name="username_or_password_incorrect">Username or Password are incorrect</string>
+    <string name="reported_by">Reported by: %1$s</string>
+    <string name="report_ignored">Report Ignored</string>
+    <string name="review_deleted">Review Deleted</string>
+    <string name="delete_review_option">Delete Review</string>
+    <string name="ignore_report_option">Ignore Report</string>
     <string name="review">
         Mixed experience.
         The service was great but the duck we were served was still quacking!</string>

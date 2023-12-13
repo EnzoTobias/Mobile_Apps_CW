@@ -10,11 +10,12 @@ import kotlin.random.Random
 
 class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
-        private const val DATABASE_VERSION = 43
+        private const val DATABASE_VERSION = 48
         private const val DATABASE_NAME = "AppDatabase.db"
         private const val TABLE_RESTAURANT = "restaurant"
         private const val TABLE_REVIEW = "review"
         private const val TABLE_USER = "user"
+        private const val TABLE_BLOCKS = "blocks"
         private const val COLUMN_RESTAURANT_ID = "restaurantID"
         private const val COLUMN_REVIEW_ID = "reviewID"
         private const val COLUMN_NAME = "name"
@@ -24,10 +25,11 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         private const val COLUMN_USER_ID = "userID"
         private const val COLUMN_USERNAME = "username"
         private const val COLUMN_DESCRIPTION = "description"
-        private const val COLUMN_PASSWORD = "password"
         private const val COLUMN_IMAGES = "images"
         private const val TABLE_REPORT = "report"
         private const val COLUMN_REPORT_ID = "reportID"
+        private const val COLUMN_BLOCKER_ID = "blockerID"
+        private const val COLUMN_BLOCKED_ID= "blockedID"
 
     }
 
@@ -38,8 +40,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         db.execSQL(createRestaurantTableQuery)
 
         val createUserTableQuery = ("CREATE TABLE $TABLE_USER " +
-                "($COLUMN_USER_ID TEXT PRIMARY KEY, $COLUMN_USERNAME TEXT, $COLUMN_IMAGE_PATH TEXT, " +
-                "$COLUMN_PASSWORD TEXT)")
+                "($COLUMN_USER_ID TEXT PRIMARY KEY, $COLUMN_USERNAME TEXT, $COLUMN_IMAGE_PATH TEXT)")
         db.execSQL(createUserTableQuery)
 
         val createReviewTableQuery = ("CREATE TABLE $TABLE_REVIEW " +
@@ -56,6 +57,11 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
                 "FOREIGN KEY($COLUMN_USER_ID) REFERENCES $TABLE_USER($COLUMN_USER_ID))")
         db.execSQL(createReportTableQuery)
 
+        val createBlockTableQuery = ("CREATE TABLE $TABLE_BLOCKS " +
+                "($COLUMN_BLOCKER_ID TEXT, $COLUMN_BLOCKED_ID TEXT)")
+
+        db.execSQL(createBlockTableQuery)
+
 
     }
 
@@ -65,7 +71,51 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         db.execSQL("DROP TABLE IF EXISTS $TABLE_RESTAURANT")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_USER")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_REPORT")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_BLOCKS")
         onCreate(db)
+    }
+
+    fun addBlockedUser(blockerID: String, blockedID: String): Boolean {
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(COLUMN_BLOCKER_ID, blockerID)
+        contentValues.put(COLUMN_BLOCKED_ID, blockedID)
+
+        val insertedId = db.insert(TABLE_BLOCKS, null, contentValues)
+        db.close()
+        return insertedId != -1L
+    }
+
+    fun getUserBlocks(userID: String): ArrayList<String> {
+        val blockedUsers = ArrayList<String>()
+        val db = this.readableDatabase
+
+        val query = "SELECT $COLUMN_BLOCKED_ID FROM $TABLE_BLOCKS WHERE $COLUMN_BLOCKER_ID = ?"
+        val cursor = db.rawQuery(query, arrayOf(userID))
+
+        while (cursor.moveToNext()) {
+            val blockedUserID = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_BLOCKED_ID))
+            blockedUsers.add(blockedUserID)
+        }
+
+        cursor.close()
+        db.close()
+
+        return blockedUsers
+    }
+
+    fun removeBlock(blockerID: String, blockedID: String): Boolean {
+        val db = this.writableDatabase
+
+        val deletedRows = db.delete(
+            TABLE_BLOCKS,
+            "$COLUMN_BLOCKER_ID = ? AND $COLUMN_BLOCKED_ID = ?",
+            arrayOf(blockerID, blockedID)
+        )
+
+        db.close()
+
+        return deletedRows > 0
     }
 
     fun addRestaurant(restaurant: Restaurant): Boolean {
@@ -100,7 +150,6 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         contentValues.put(COLUMN_USERNAME, user.username)
         contentValues.put(COLUMN_USER_ID, user.userID)
         contentValues.put(COLUMN_IMAGE_PATH, user.imagePath)
-        contentValues.put(COLUMN_PASSWORD, user.password)
         val insertedId = db.insert(TABLE_USER, null, contentValues)
         db.close()
         return insertedId != -1L
@@ -136,15 +185,13 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         val query = "SELECT * FROM $TABLE_USER WHERE $COLUMN_USER_ID = ?"
         val cursor = db.rawQuery(query, arrayOf(userID))
 
-        var user = User("", "", "", "")
+        var user = User("", "", "")
         if (cursor.moveToFirst()) {
             val username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME))
             val imgPath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE_PATH))
-            val password = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD))
             val safeUsername = username ?: ""
             val safeImgPath = imgPath ?: ""
-            val safePassword = password ?: ""
-            user = User(safeUsername, userID, safeImgPath, safePassword)
+            user = User(safeUsername, userID, safeImgPath)
         }
 
         cursor.close()
@@ -159,12 +206,11 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
         val query = "SELECT * FROM $TABLE_USER WHERE $COLUMN_USERNAME = ?"
         val cursor = db.rawQuery(query, arrayOf(userName))
 
-        var user = User("", "", "", "")
+        var user = User("", "", "")
         if (cursor.moveToFirst()) {
             val userID = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
             val imgPath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE_PATH))
-            val password = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD))
-            user = User(userName, userID, imgPath, password)
+            user = User(userName, userID, imgPath)
         }
 
         cursor.close()
@@ -365,7 +411,7 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
                 Restaurant("Restaurant E", 15, "","f00d"),
                 Restaurant("ZERO", 0, "","0000")
             )
-            val dummyUser = User("troll","","", "")
+            val dummyUser = User("troll","","")
             for (restaurant in dummyRestaurants) {
                 val contentValues = ContentValues()
                 contentValues.put(COLUMN_RESTAURANT_ID, restaurant.restaurantID)
@@ -410,7 +456,6 @@ class AppDatabase(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, n
 
             db.setTransactionSuccessful()
         } catch (e: Exception) {
-            // Handle exceptions or logging if necessary
         } finally {
             db.endTransaction()
             db.close()

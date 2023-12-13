@@ -96,18 +96,18 @@ class CreateReviewActivity : AppCompatActivity() {
                     if (receiveCreateOrEdit) {
                         updated = db.addReview(review)
                         if (updated) {
-                            showSnackbar("Review submitted")
+                            showSnackbar(getString(R.string.review_submitted))
                             finish = true
                         } else {
-                            showSnackbar("Failed to submit review")
+                            showSnackbar(getString(R.string.failed_submit_review))
                         }
                     } else {
                         updated = db.updateReview(review)
                         if (updated) {
-                            showSnackbar("Review updated")
+                            showSnackbar(getString(R.string.review_updated))
                             finish = true
                         } else {
-                            showSnackbar("Failed to update review")
+                            showSnackbar(getString(R.string.failed_update_review))
                         }
                     }
 
@@ -115,7 +115,7 @@ class CreateReviewActivity : AppCompatActivity() {
 
                 }
             } else {
-                showSnackbar("Review must be longer than 3 characters")
+                (getString(R.string.review_length_error))
             }
             if (finish) {
                 if (fromUserPage) {

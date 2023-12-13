@@ -32,7 +32,7 @@ class ImageHandler {
             pickIntent.type = "image/*"
             pickIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, multiple)
             activity.startActivityForResult(
-                Intent.createChooser(pickIntent, "Select Picture"),
+                Intent.createChooser(pickIntent, activity.getString(R.string.select_picture)),
                 REQUEST_IMAGE_PICK
             )
         }

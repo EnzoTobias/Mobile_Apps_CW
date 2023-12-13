@@ -3,7 +3,9 @@ package com.example.cw
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -14,6 +16,9 @@ import androidx.core.view.isVisible
 import android.widget.PopupMenu
 import androidx.core.content.ContextCompat.startActivity
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -52,18 +57,48 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
                 val s3 = reviewLayout.findViewById<ImageView>(R.id.starImage3)
                 val s4 = reviewLayout.findViewById<ImageView>(R.id.starImage4)
                 val s5 = reviewLayout.findViewById<ImageView>(R.id.starImage5)
+                val constraint = reviewLayout.findViewById<ConstraintLayout>(R.id.reviewConstraint)
                 val imagesLayout = reviewLayout.findViewById<LinearLayout>(R.id.imagesLinearReview)
                 val user = review.user
+                val mAuth = FirebaseAuth.getInstance()
+                val currentUserFire = mAuth.currentUser
+                db = AppDatabase(context)
+
+                val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+
+
+
+                if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+                    constraint.setBackgroundColor(getColor(context, R.color.darkbackground))
+                }
+
+                if (currentUserFire != null) {
+                    val currentUser = db.getUserById(currentUserFire.uid)
+                    val blockedUsers = db.getUserBlocks(currentUser.userID)
+                    if (user.userID in blockedUsers) {
+                        review.text = "BLOCKED USER REVIEW"
+                        user.username = "BLOCKED USER"
+                        user.imagePath = ""
+                    }
+                } else {
+                    moreOptions.isVisible = false
+                }
+
                 if (inUserPage) {
-                    userPfp.setImageBitmap(review.restaurant.getRestaurantImageFromPath(context, R.drawable.reyzel_lezyer_photo_of_a_duck_soup_photorealistic_ad89f309_f9b3_4717_abda_a89ba176c68b))
+                    userPfp.setImageBitmap(review.restaurant.getRestaurantImageFromPath(context, R.drawable.account_empty))
                     userName.text = review.restaurant.name
                 } else {
-                    userPfp.setImageBitmap(user.getUserPfpFromPath(context, R.drawable.reyzel_lezyer_photo_of_a_duck_soup_photorealistic_ad89f309_f9b3_4717_abda_a89ba176c68b))
+                    userPfp.setImageBitmap(user.getUserPfpFromPath(context, R.drawable.account_empty))
                     userName.text = review.user.username
                 }
 
-                db = AppDatabase(context)
-
+                userPfp.setOnClickListener{
+                    if (currentUserFire != null) {
+                        val intent = Intent(context, Account::class.java)
+                        intent.putExtra("SPECIFIC_USER", user.userID)
+                        context.startActivity(intent)
+                    }
+                }
 
                 reviewText.text = review.text
 
@@ -73,13 +108,13 @@ class Review(var text: String, var reviewID: Int, var restaurant: Restaurant, va
                     imagesLayout.isVisible = false
                 }
 
+
                 moreOptions.setOnClickListener {
                     val popupMenu = PopupMenu(context, moreOptions)
 
                     popupMenu.menuInflater.inflate(R.menu.review_options_menu, popupMenu.menu)
 
-                    val mAuth = FirebaseAuth.getInstance()
-                    val currentUserFire = mAuth.currentUser
+
                     if (currentUserFire != null) {
                         val currentUser = db.getUserById(currentUserFire.uid)
                         if (currentUser.userID == review.user.userID) {
